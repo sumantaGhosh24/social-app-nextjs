@@ -3,9 +3,12 @@ import {Inter as FontSans} from "next/font/google";
 import type {Metadata} from "next";
 
 import {cn} from "@/lib/utils";
-
-import {ThemeProvider} from "./_components/theme-provider";
-import PrimaryColorProvider from "./_components/primary-provider";
+import {Toaster} from "@/components/ui/toaster";
+import getServerUser from "@/actions/getServerUser";
+import {ThemeProvider} from "@/components/theme-provider";
+import PrimaryColorProvider from "@/components/primary-provider";
+import AuthProvider from "@/components/auth-provider";
+import Header from "@/components/header";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -20,11 +23,13 @@ export const metadata: Metadata = {
   description: "Social media app using nextjs",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const user = await getServerUser();
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -39,7 +44,13 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <PrimaryColorProvider>{children}</PrimaryColorProvider>
+          <PrimaryColorProvider>
+            <AuthProvider>
+              <Header user={user ? JSON.parse(JSON.stringify(user)) : null} />
+              <main>{children}</main>
+              <Toaster />
+            </AuthProvider>
+          </PrimaryColorProvider>
         </ThemeProvider>
       </body>
     </html>

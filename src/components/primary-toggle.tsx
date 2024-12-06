@@ -2,7 +2,6 @@
 
 import {Pen} from "lucide-react";
 
-import {usePrimaryColor} from "./primary-provider";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,14 +10,20 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {Button} from "@/components/ui/button";
 
+import {usePrimaryColor} from "./primary-provider";
+
 const PrimaryToggle = () => {
   const {setPrimaryColor} = usePrimaryColor();
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
-          <Pen />
+        <Button
+          variant="outline"
+          size="icon"
+          className="bg-white hover:bg-gray-200"
+        >
+          <Pen color="black" strokeWidth="2" />
           <span className="sr-only">Toggle primary color</span>
         </Button>
       </DropdownMenuTrigger>
