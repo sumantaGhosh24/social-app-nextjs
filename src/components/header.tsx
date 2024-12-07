@@ -16,6 +16,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import {Button} from "@/components/ui/button";
+import {cn} from "@/lib/utils";
 
 import {ModeToggle} from "./mode-toggle";
 import PrimaryToggle from "./primary-toggle";
@@ -111,7 +112,10 @@ const Header = ({user}: {user: any}) => {
                   <Button
                     variant="secondary"
                     onClick={() => signOut()}
-                    className={navigationMenuTriggerStyle()}
+                    className={cn(
+                      navigationMenuTriggerStyle(),
+                      "dark:text-black"
+                    )}
                   >
                     Logout
                   </Button>

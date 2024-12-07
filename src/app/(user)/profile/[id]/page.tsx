@@ -2,18 +2,26 @@ import {redirect} from "next/navigation";
 
 import {getUser} from "@/actions/userActions";
 
+import ProfileDetails from "./_components/profile-details";
+
 export const metadata = {
   title: "Profile",
 };
 
-const Profile = async () => {
-  const user = await getUser();
+interface ProfileProps {
+  params: {id: string};
+}
+
+const Profile = async ({params}: ProfileProps) => {
+  const {id} = await params;
+
+  const user = await getUser(id);
   if (!user) redirect("/");
 
   return (
-    <div>
-      <h2>{JSON.stringify(user, null, 4)}</h2>
-    </div>
+    <>
+      <ProfileDetails user={user} />
+    </>
   );
 };
 

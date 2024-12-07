@@ -10,7 +10,7 @@ export interface IPost extends Document {
     url: string;
     public_id: string;
     blurHash: string;
-  };
+  }[];
   public: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -27,11 +27,13 @@ const PostSchema = new Schema(
       type: String,
       trim: true,
     },
-    image: {
-      url: String,
-      public_id: String,
-      blurHash: String,
-    },
+    image: [
+      {
+        url: String,
+        public_id: String,
+        blurHash: String,
+      },
+    ],
     public: {
       type: Boolean,
       default: true,

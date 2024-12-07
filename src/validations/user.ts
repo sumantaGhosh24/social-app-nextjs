@@ -94,3 +94,23 @@ export const UserUpdateValidation = z.object({
     .trim()
     .toLowerCase(),
 });
+
+export const ResetPasswordValidation = z
+  .object({
+    oldPassword: z
+      .string()
+      .min(6, {message: "Password length at least 6 characters long"})
+      .trim(),
+    password: z
+      .string()
+      .min(6, {message: "Password length at least 6 characters long"})
+      .trim(),
+    cf_password: z
+      .string()
+      .min(6, {message: "Password length at least 6 characters long"})
+      .trim(),
+  })
+  .refine((data) => data.password === data.cf_password, {
+    message: "Password and Confirm password not match",
+    path: ["cf_password"],
+  });

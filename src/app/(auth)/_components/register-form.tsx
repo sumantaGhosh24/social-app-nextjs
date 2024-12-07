@@ -238,7 +238,9 @@ const RegisterForm = () => {
               name="dob"
               render={({field}) => (
                 <FormItem className="flex flex-col w-full">
-                  <FormLabel>Date of birth</FormLabel>
+                  <FormLabel className="text-base font-semibold">
+                    Date of birth
+                  </FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>
