@@ -3,14 +3,12 @@ import {
   User,
   Settings,
   Lock,
-  Users,
   UserPlus,
   UserCog,
   Image,
   Video,
   Music,
   MessageCircle,
-  MessageCircleCode,
 } from "lucide-react";
 
 import {
@@ -87,30 +85,22 @@ export default function ProfileSidebar({
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
-                  <Link href={`/profile/${profileId}/friends`}>
-                    <Users />
-                    <span>Friends</span>
+                  <Link href={`/profile/${profileId}/followers`}>
+                    <UserPlus />
+                    <span>Followers</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <Link href={`/profile/${profileId}/followings`}>
+                    <UserCog />
+                    <span>Followings</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
               {profileId === userId && (
                 <>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                      <Link href={`/profile/${profileId}/requests`}>
-                        <UserPlus />
-                        <span>Friend Requests</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                      <Link href={`/profile/${profileId}/my-requests`}>
-                        <UserCog />
-                        <span>My Requests</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
                   <SidebarMenuItem>
                     <SidebarMenuButton asChild>
                       <Link href={`/profile/${profileId}/comments`}>
@@ -125,6 +115,7 @@ export default function ProfileSidebar({
           </SidebarGroupContent>
         </SidebarGroup>
         <SidebarSeparator />
+        {/* my/private/saved/liked */}
         <SidebarGroup>
           <SidebarGroupLabel>Media</SidebarGroupLabel>
           <SidebarGroupContent>
@@ -134,14 +125,6 @@ export default function ProfileSidebar({
                   <Link href={`/profile/${profileId}/posts`}>
                     <Image />
                     <span>Posts</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <Link href={`/profile/${profileId}/threads`}>
-                    <MessageCircleCode />
-                    <span>Threads</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>

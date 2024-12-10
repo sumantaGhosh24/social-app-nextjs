@@ -63,6 +63,14 @@ const Header = ({user}: {user: any}) => {
                   {[
                     {id: 1, name: "Home", url: "/"},
                     {id: 2, name: "Profile", url: `/profile/${user._id}`},
+                    {id: 3, name: "Search Users", url: "/search"},
+                    {
+                      id: 4,
+                      name: user?.hasNotification
+                        ? "Notifications*"
+                        : "Notifications",
+                      url: "/notifications",
+                    },
                   ].map((item) => (
                     <NavigationMenuItem key={item.id}>
                       <Link href={item.url} legacyBehavior passHref>

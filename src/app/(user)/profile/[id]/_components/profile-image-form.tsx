@@ -50,7 +50,7 @@ const ProfileImageForm = ({user}: ProfileImageFormProps) => {
         URL.revokeObjectURL(file.imgUrl);
       }
 
-      await updateProfileImage({id: user._id, formData, path});
+      await updateProfileImage({id: user._id, formData, path, name: user.name});
 
       setFile(null);
 

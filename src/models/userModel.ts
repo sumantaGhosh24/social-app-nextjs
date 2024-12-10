@@ -17,6 +17,8 @@ export interface IUser extends Document {
     public_id: string;
     blurHash: string;
   };
+  followers: any[];
+  followings: any[];
   dob: string;
   gender: string;
   city: string;
@@ -24,6 +26,7 @@ export interface IUser extends Document {
   country: string;
   zip: string;
   addressline: string;
+  hasNotification: boolean;
   role: "user" | "admin";
   createdAt: Date;
   updatedAt: Date;
@@ -63,6 +66,18 @@ const UserSchema = new Schema(
       public_id: String,
       blurHash: String,
     },
+    followers: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    followings: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
     dob: {
       type: String,
     },
@@ -84,6 +99,10 @@ const UserSchema = new Schema(
     addressline: {
       type: String,
     },
+    hasNotification: {
+      type: Boolean,
+      default: false,
+    },
     role: {
       type: String,
       default: "user",
@@ -91,6 +110,8 @@ const UserSchema = new Schema(
   },
   {timestamps: true}
 );
+
+UserSchema.index({name: "text", username: "text", email: "text"});
 
 const UserModel = models?.User || model<IUser>("User", UserSchema);
 

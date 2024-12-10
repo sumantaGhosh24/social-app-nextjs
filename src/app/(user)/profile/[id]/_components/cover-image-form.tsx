@@ -50,7 +50,7 @@ const CoverImageForm = ({user}: CoverImageFormProps) => {
         URL.revokeObjectURL(file.imgUrl);
       }
 
-      await updateCoverImage({id: user._id, formData, path});
+      await updateCoverImage({id: user._id, formData, path, name: user.name});
 
       setFile(null);
 

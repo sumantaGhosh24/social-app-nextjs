@@ -22,10 +22,10 @@ export function validFiles(file: any) {
       imgUrl: URL.createObjectURL(file),
     };
   }
-  if (file.size > 5 * 1024 * 1024) {
+  if (file.size > 1 * 1024 * 1024) {
     return {
       status: "error",
-      message: "Image is too large (required size 5mb).",
+      message: "Image is too large (required size 1mb).",
       imgUrl: URL.createObjectURL(file),
     };
   }

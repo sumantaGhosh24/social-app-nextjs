@@ -1,12 +1,22 @@
+"use client";
+
 import Image from "next/image";
 
+import useFollow from "@/hooks/use-follow";
 import {IUser} from "@/models/userModel";
+import {Button} from "@/components/ui/button";
 
 interface ProfileDetailsProps {
   user: IUser;
+  currentUser: IUser;
 }
 
-const ProfileDetails = ({user}: ProfileDetailsProps) => {
+const ProfileDetails = ({user, currentUser}: ProfileDetailsProps) => {
+  const {isFollowing, toggleFollow} = useFollow({
+    userId: user?._id,
+    currentUser,
+  });
+
   return (
     <div className="my-10 flex w-full items-center justify-center">
       <div className="w-[95%] space-y-4 rounded-lg p-5 shadow-lg shadow-black dark:shadow-white">
@@ -40,6 +50,24 @@ const ProfileDetails = ({user}: ProfileDetailsProps) => {
         )}
         <br />
         <h2 className="text-2xl font-bold capitalize">{user.name}</h2>
+        {currentUser?._id !== user?._id && (
+          <Button
+            onClick={toggleFollow}
+            variant={isFollowing ? "secondary" : "default"}
+          >
+            {isFollowing ? "Unfollow" : "Follow"}
+          </Button>
+        )}
+        <div>
+          <h3 className="text-lg font-bold">
+            Followers:{" "}
+            <span className="font-medium">{user?.followers?.length || 0}</span>
+          </h3>
+          <h3 className="text-lg font-bold">
+            Followings:{" "}
+            <span className="font-medium">{user?.followings?.length || 0}</span>
+          </h3>
+        </div>
         <h3 className="text-lg font-bold">
           Username: <span className="font-medium">{user.username}</span>
         </h3>

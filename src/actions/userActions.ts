@@ -8,7 +8,10 @@ import connectDB from "@/lib/db";
 import {uploadToCloudinary} from "@/lib/cloudinary";
 import UserModel from "@/models/userModel";
 import PostModel from "@/models/postModel";
+import NotificationModel from "@/models/notificationModel";
 import {dynamicBlurDataUrl} from "@/lib/utils";
+
+import getServerUser from "./getServerUser";
 
 interface RegisterUserParams {
   name: string;
@@ -50,12 +53,14 @@ interface UpdateProfileImageParams {
   id: string;
   formData: any;
   path: string;
+  name: string;
 }
 
 interface UpdateCoverImageParams {
   id: string;
   formData: any;
   path: string;
+  name: string;
 }
 
 interface ResetPasswordParams {
@@ -143,6 +148,42 @@ export async function getUser(id: string) {
   }
 }
 
+export async function getFollowers(id: string) {
+  try {
+    connectDB();
+
+    const userData = await UserModel.findById(id).select("followers").populate({
+      path: "followers",
+      model: UserModel,
+      select: "-password",
+    });
+    if (!userData) throw new Error("User does not exists.");
+
+    return JSON.parse(JSON.stringify(userData));
+  } catch (error: any) {
+    throw new Error(`Failed to get user followers: ${error.message}`);
+  }
+}
+
+export async function getFollowings(id: string) {
+  try {
+    connectDB();
+
+    const userData = await UserModel.findById(id)
+      .select("followings")
+      .populate({
+        path: "followings",
+        model: UserModel,
+        select: "-password",
+      });
+    if (!userData) throw new Error("User does not exists.");
+
+    return JSON.parse(JSON.stringify(userData));
+  } catch (error: any) {
+    throw new Error(`Failed to get user followings: ${error.message}`);
+  }
+}
+
 export async function updateUser({
   id,
   name,
@@ -204,15 +245,61 @@ export async function getUsers({
   }
 }
 
+export async function searchUsers({
+  pageNumber = 1,
+  pageSize = 20,
+  sortBy = "desc",
+  searchString = "",
+}: FetchUserParams) {
+  try {
+    connectDB();
+
+    const currentUser = await getServerUser();
+    if (!currentUser) throw new Error("Unauthorized!");
+
+    const nameCondition = searchString
+      ? {name: {$regex: searchString, $options: "i"}}
+      : {};
+
+    const excludeCurrentUserCondition = currentUser
+      ? {_id: {$ne: currentUser?._id}}
+      : {};
+
+    const skipAmount = (Number(pageNumber) - 1) * pageSize;
+
+    const usersQuery = await UserModel.find({
+      ...nameCondition,
+      ...excludeCurrentUserCondition,
+    })
+      .sort({createdAt: sortBy})
+      .skip(skipAmount)
+      .limit(pageSize);
+
+    const usersCount = await UserModel.countDocuments({
+      ...nameCondition,
+      ...excludeCurrentUserCondition,
+    });
+
+    return {
+      data: JSON.parse(JSON.stringify(usersQuery)),
+      totalPages: Math.ceil(usersCount / pageSize),
+    };
+  } catch (error: any) {
+    throw new Error(`Failed to search users: ${error.message}`);
+  }
+}
+
 export async function updateProfileImage({
   id,
   formData,
+  name,
   path,
 }: UpdateProfileImageParams) {
   try {
     connectDB();
 
     const files = formData.getAll("files");
+    if (!files) throw new Error("Image is required.");
 
     const [res] = await uploadToCloudinary(files);
 
@@ -231,12 +318,21 @@ export async function updateProfileImage({
 
     await newPost.save();
 
-    await UserModel.findByIdAndUpdate(id, {
+    const user = await UserModel.findByIdAndUpdate(id, {
       profileImage: {
         url: res?.secure_url,
         public_id: res?.public_id,
         blurHash: blurData,
       },
+    });
+
+    user.followers.map(async (us: string) => {
+      await NotificationModel.create({
+        from: id,
+        user: us,
+        message: `${name} post a image!`,
+        url: "#",
+      });
     });
 
     revalidatePath(path);
@@ -248,12 +344,14 @@ export async function updateProfileImage({
 export async function updateCoverImage({
   id,
   formData,
+  name,
   path,
 }: UpdateCoverImageParams) {
   try {
     connectDB();
 
     const files = formData.getAll("files");
+    if (!files) throw new Error("Image is required.");
 
     const [res] = await uploadToCloudinary(files);
 
@@ -272,16 +370,26 @@ export async function updateCoverImage({
 
     await newPost.save();
 
-    await UserModel.findByIdAndUpdate(id, {
+    const user = await UserModel.findByIdAndUpdate(id, {
       coverImage: {
         url: res?.secure_url,
-        public: res?.public_id,
+        public_id: res?.public_id,
         blurHash: blurData,
       },
     });
 
+    user.followers.map(async (us: string) => {
+      await NotificationModel.create({
+        from: id,
+        user: us,
+        message: `${name} post a image!`,
+        url: "#",
+      });
+    });
+
     revalidatePath(path);
   } catch (error: any) {
+    console.log(error);
     throw new Error(`Failed to update user cover image: ${error.message}`);
   }
 }
@@ -314,6 +422,79 @@ export async function resetPassword({
     await UserModel.findByIdAndUpdate(id, {
       password: hashedPassword,
     });
+
+    revalidatePath(path);
+  } catch (error: any) {
+    throw new Error(`Failed to register user: ${error.message}`);
+  }
+}
+
+export async function follow(userId: string, path: string) {
+  try {
+    if (!userId || typeof userId !== "string") {
+      throw new Error("Invalid user id.");
+    }
+
+    const currentUser = await getServerUser();
+    if (!currentUser) {
+      throw new Error("Unauthorized");
+    }
+
+    const check = await UserModel.find({
+      _id: userId,
+      followers: currentUser?._id,
+    });
+    if (check.length > 0) return;
+
+    await UserModel.findOneAndUpdate(
+      {_id: userId},
+      {$push: {followers: currentUser?._id}},
+      {new: true}
+    );
+
+    const user = await UserModel.findOneAndUpdate(
+      {_id: currentUser?._id},
+      {$push: {followings: userId}},
+      {new: true}
+    );
+
+    await NotificationModel.create({
+      from: currentUser?._id,
+      user: userId,
+      message: `${user.username} followed you!`,
+      url: `${process.env.NEXTAUTH_URL}/profile/${user._id}`,
+    });
+
+    await UserModel.findOneAndUpdate({_id: userId}, {hasNotification: true});
+
+    revalidatePath(path);
+  } catch (error: any) {
+    throw new Error(`Failed to register user: ${error.message}`);
+  }
+}
+
+export async function unfollow(userId: string, path: string) {
+  try {
+    if (!userId || typeof userId !== "string") {
+      throw new Error("Invalid user id.");
+    }
+
+    const currentUser = await getServerUser();
+    if (!currentUser) {
+      throw new Error("Unauthorized");
+    }
+
+    await UserModel.findOneAndUpdate(
+      {_id: userId},
+      {$pull: {followers: currentUser?._id}},
+      {new: true}
+    );
+
+    await UserModel.findOneAndUpdate(
+      {_id: currentUser?._id},
+      {$pull: {followings: userId}},
+      {new: true}
+    );
 
     revalidatePath(path);
   } catch (error: any) {
