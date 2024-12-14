@@ -6,9 +6,8 @@ import {
   UserPlus,
   UserCog,
   Image,
-  Video,
-  Music,
-  MessageCircle,
+  Save,
+  Heart,
 } from "lucide-react";
 
 import {
@@ -99,23 +98,10 @@ export default function ProfileSidebar({
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-              {profileId === userId && (
-                <>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                      <Link href={`/profile/${profileId}/comments`}>
-                        <MessageCircle />
-                        <span>My Comments</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                </>
-              )}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
         <SidebarSeparator />
-        {/* my/private/saved/liked */}
         <SidebarGroup>
           <SidebarGroupLabel>Media</SidebarGroupLabel>
           <SidebarGroupContent>
@@ -128,22 +114,34 @@ export default function ProfileSidebar({
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <Link href={`/profile/${profileId}/videos`}>
-                    <Video />
-                    <span>Videos</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <Link href={`/profile/${profileId}/audios`}>
-                    <Music />
-                    <span>Audios</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+              {profileId === userId && (
+                <>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <Link href={`/profile/${profileId}/private`}>
+                        <Lock />
+                        <span>Private Posts</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <Link href={`/profile/${profileId}/liked`}>
+                        <Heart />
+                        <span>Liked Posts</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <Link href={`/profile/${profileId}/saved`}>
+                        <Save />
+                        <span>Saved Posts</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </>
+              )}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

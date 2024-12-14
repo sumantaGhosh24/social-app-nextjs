@@ -8,12 +8,12 @@ import {IUser} from "@/models/userModel";
 
 import {useToast} from "./use-toast";
 
-interface UseFollowType {
+interface UseFollowProps {
   userId: string;
   currentUser: IUser;
 }
 
-export default function useFollow({userId, currentUser}: UseFollowType) {
+export default function useFollow({userId, currentUser}: UseFollowProps) {
   const {toast} = useToast();
 
   const path = usePathname();

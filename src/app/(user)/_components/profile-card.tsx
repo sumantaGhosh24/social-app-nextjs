@@ -33,7 +33,7 @@ const ProfileCard = ({user, currentUser}: ProfileCardProps) => {
   };
 
   return (
-    <Card className="flex items-center w-[80%] justify-between">
+    <Card className="flex items-center w-full justify-between flex-wrap p-3">
       <CardHeader className="flex items-center flex-row gap-2.5">
         <Avatar>
           <AvatarImage src={user.profileImage.url} />
@@ -46,20 +46,25 @@ const ProfileCard = ({user, currentUser}: ProfileCardProps) => {
           <CardDescription>{user.email}</CardDescription>
         </div>
       </CardHeader>
-      <div>
-        <p>Followers: {user?.followers?.length || 0}</p>
-        <p>Followings: {user?.followings?.length || 0}</p>
-      </div>
-      <div>
-        <p>Age: {formatDistanceToNowStrict(user.dob)}</p>
-        <p>User Since: {formatDistanceToNowStrict(user.createdAt)}</p>
+      <div className="flex items-center gap-5 mb-4">
+        <div>
+          <p>Followers: {user?.followers?.length || 0}</p>
+          <p>Followings: {user?.followings?.length || 0}</p>
+        </div>
+        <div>
+          <p>Age: {formatDistanceToNowStrict(user.dob)}</p>
+          <p>User Since: {formatDistanceToNowStrict(user.createdAt)}</p>
+        </div>
       </div>
       <CardFooter className="flex gap-3">
-        <Button onClick={() => handleClick()}>View</Button>
+        <Button onClick={() => handleClick()} className="dark:text-black">
+          View
+        </Button>
         {user._id !== currentUser._id && (
           <Button
             onClick={toggleFollow}
             variant={isFollowing ? "secondary" : "default"}
+            className="dark:text-black"
           >
             {isFollowing ? "Unfollow" : "Follow"}
           </Button>

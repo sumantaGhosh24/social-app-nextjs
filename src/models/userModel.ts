@@ -1,5 +1,7 @@
 import {Schema, model, models} from "mongoose";
 
+import {IPost} from "./postModel";
+
 export interface IUser extends Document {
   _id: string;
   name: string;
@@ -19,6 +21,7 @@ export interface IUser extends Document {
   };
   followers: any[];
   followings: any[];
+  saved: IPost[];
   dob: string;
   gender: string;
   city: string;
@@ -76,6 +79,12 @@ const UserSchema = new Schema(
       {
         type: Schema.Types.ObjectId,
         ref: "User",
+      },
+    ],
+    saved: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Post",
       },
     ],
     dob: {

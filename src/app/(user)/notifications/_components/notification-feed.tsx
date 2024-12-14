@@ -1,7 +1,7 @@
 "use client";
 
 import {useState} from "react";
-import {usePathname} from "next/navigation";
+import {usePathname, useRouter} from "next/navigation";
 import Image from "next/image";
 import {formatDistanceToNowStrict} from "date-fns";
 import {Eye} from "lucide-react";
@@ -44,6 +44,7 @@ const NotificationFeed = ({
   const [loading, setLoading] = useState(false);
 
   const path = usePathname();
+  const router = useRouter();
 
   const {primaryColor} = usePrimaryColor();
   const {toast} = useToast();
@@ -141,6 +142,15 @@ const NotificationFeed = ({
                     {formatDistanceToNowStrict(notification.createdAt)}
                   </TableCell>
                   <TableCell>
+                    <Button
+                      variant="default"
+                      onClick={() => router.push(notification.url)}
+                      disabled={loading}
+                      className={`max-w-fit bg-${primaryColor}-700 hover:bg-${primaryColor}-800 disabled:bg-${primaryColor}-300 mb-4 md:mr-4`}
+                    >
+                      <Eye size={24} className="mr-2" />
+                      View
+                    </Button>
                     {!notification.isRead && (
                       <Button
                         variant="default"

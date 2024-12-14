@@ -11,6 +11,7 @@ export interface IPost extends Document {
     public_id: string;
     blurHash: string;
   }[];
+  likes: IUser[];
   public: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -34,6 +35,12 @@ const PostSchema = new Schema(
         blurHash: String,
       },
     ],
+    likes: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
     public: {
       type: Boolean,
       default: true,
@@ -42,6 +49,6 @@ const PostSchema = new Schema(
   {timestamps: true}
 );
 
-const PostModel = models?.Post || model("Post", PostSchema);
+const PostModel = models?.Post || model<IPost>("Post", PostSchema);
 
 export default PostModel;

@@ -1,30 +1,28 @@
 import getServerUser from "@/actions/getServerUser";
-import {getPosts} from "@/actions/postActions";
+import {getDiscoverPosts} from "@/actions/postActions";
 import {getUserSuggestions} from "@/actions/userActions";
 
-import CreatePost from "./_components/create-post";
-import PostFeed from "./_components/post-feed";
-import FollowBar from "./_components/follow-bar";
+import FollowBar from "../_components/follow-bar";
+import PostFeed from "../_components/post-feed";
 
 export const metadata = {
-  title: "Home",
+  title: "Discover",
 };
 
-interface HomeProps {
+interface DiscoverProps {
   searchParams: {[key: string]: string | string[] | undefined};
 }
 
-export default async function Home({searchParams}: HomeProps) {
+export default async function Discover({searchParams}: DiscoverProps) {
   const {page} = await searchParams;
 
   const user = await getServerUser();
-  const posts = await getPosts({pageNumber: Number(page) || 1});
+  const posts = await getDiscoverPosts({pageNumber: Number(page) || 1});
   const users = await getUserSuggestions();
 
   return (
     <div className="flex flex-col-reverse md:flex-row">
       <div className="w-full mb-5 md:mb-0 md:w-3/4">
-        <CreatePost user={JSON.parse(JSON.stringify(user))} />
         <PostFeed
           data={posts?.data}
           emptyTitle="No post found"

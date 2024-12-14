@@ -5,11 +5,11 @@ import bcrypt from "bcryptjs";
 import {SortOrder} from "mongoose";
 
 import connectDB from "@/lib/db";
+import {dynamicBlurDataUrl} from "@/lib/utils";
 import {uploadToCloudinary} from "@/lib/cloudinary";
 import UserModel from "@/models/userModel";
 import PostModel from "@/models/postModel";
 import NotificationModel from "@/models/notificationModel";
-import {dynamicBlurDataUrl} from "@/lib/utils";
 
 import getServerUser from "./getServerUser";
 
@@ -331,7 +331,7 @@ export async function updateProfileImage({
         from: id,
         user: us,
         message: `${name} post a image!`,
-        url: "#",
+        url: `${process.env.NEXTAUTH_URL}/post/${newPost._id}`,
       });
     });
 
@@ -383,7 +383,7 @@ export async function updateCoverImage({
         from: id,
         user: us,
         message: `${name} post a image!`,
-        url: "#",
+        url: `${process.env.NEXTAUTH_URL}/post/${newPost._id}`,
       });
     });
 
@@ -499,5 +499,42 @@ export async function unfollow(userId: string, path: string) {
     revalidatePath(path);
   } catch (error: any) {
     throw new Error(`Failed to register user: ${error.message}`);
+  }
+}
+
+export async function getUserSuggestions() {
+  try {
+    connectDB();
+
+    const user = await getServerUser();
+    if (!user) throw new Error("Unauthorized!");
+
+    const newArr = [...user.followings];
+    const limit = 10;
+
+    const users = await UserModel.aggregate([
+      {$match: {_id: {$nin: newArr}}},
+      {$sample: {size: Number(limit)}},
+      {
+        $lookup: {
+          from: "users",
+          localField: "followers",
+          foreignField: "_id",
+          as: "followers",
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "followings",
+          foreignField: "_id",
+          as: "followings",
+        },
+      },
+    ]);
+
+    return JSON.parse(JSON.stringify(users));
+  } catch (error: any) {
+    throw new Error(`Failed to get user suggestion data: ${error.message}`);
   }
 }
