@@ -5,54 +5,49 @@ import {SortOrder} from "mongoose";
 
 import connectDB from "@/lib/db";
 import UserModel from "@/models/userModel";
-import PostModel from "@/models/postModel";
+import VideoModel from "@/models/videoModel";
 import NotificationModel from "@/models/notificationModel";
 import {uploadToCloudinary} from "@/lib/cloudinary";
 import {dynamicBlurDataUrl} from "@/lib/utils";
 
 import getServerUser from "./getServerUser";
 
-interface GetPostsParams {
+interface GetVideosParams {
   id?: string;
   pageNumber?: number;
   pageSize?: number;
   sortBy?: SortOrder;
 }
 
-interface CreatePostParams {
+interface CreateVideoParams {
   title: string;
   formData: any;
   path: string;
 }
 
-interface UpdatePostPublicParams {
+interface UpdateVideoPublicParams {
   id: string;
   isPublic: boolean;
   path: string;
 }
 
-interface LikePostParams {
-  postId: string;
-  postUserId: string;
+interface LikeVideoParams {
+  videoId: string;
+  videoUserId: string;
   path: string;
 }
 
-interface DislikePostParams {
-  postId: string;
+interface DislikeVideoParams {
+  videoId: string;
   path: string;
 }
 
-interface SavePostParams {
-  postId: string;
+interface SaveVideoParams {
+  videoId: string;
   path: string;
 }
 
-interface DislikePostParams {
-  postId: string;
-  path: string;
-}
-
-const populatePost = (query: any) => {
+const populateVideo = (query: any) => {
   return query.populate({
     path: "user",
     model: UserModel,
@@ -60,28 +55,28 @@ const populatePost = (query: any) => {
   });
 };
 
-export async function getPost(id: string) {
+export async function getVideo(id: string) {
   try {
     connectDB();
 
-    const post = await PostModel.findById(id).populate({
+    const video = await VideoModel.findById(id).populate({
       path: "user",
       model: UserModel,
       select:
         "_id name email username profileImage dob createdAt followers followings",
     });
 
-    return JSON.parse(JSON.stringify(post));
+    return JSON.parse(JSON.stringify(video));
   } catch (error: any) {
-    throw new Error(`Failed to get post data: ${error.message}`);
+    throw new Error(`Failed to get video data: ${error.message}`);
   }
 }
 
-export async function getPosts({
+export async function getVideos({
   pageNumber = 1,
   pageSize = 20,
   sortBy = "desc",
-}: GetPostsParams) {
+}: GetVideosParams) {
   try {
     connectDB();
 
@@ -89,32 +84,32 @@ export async function getPosts({
     if (!user) throw new Error("Unauthorized!");
 
     const skipAmount = (Number(pageNumber) - 1) * pageSize;
-    const postsQuery = PostModel.find({
+    const videosQuery = VideoModel.find({
       user: [...user.followings, user._id],
       public: true,
     })
       .sort({createdAt: sortBy})
       .skip(skipAmount)
       .limit(pageSize);
-    const posts = await populatePost(postsQuery);
-    const postsCount = await PostModel.countDocuments({
+    const videos = await populateVideo(videosQuery);
+    const videosCount = await VideoModel.countDocuments({
       user: [...user.followings, user._id],
       public: true,
     });
     return {
-      data: JSON.parse(JSON.stringify(posts)),
-      totalPages: Math.ceil(postsCount / pageSize),
+      data: JSON.parse(JSON.stringify(videos)),
+      totalPages: Math.ceil(videosCount / pageSize),
     };
   } catch (error: any) {
-    throw new Error(`Failed to get posts data: ${error.message}`);
+    throw new Error(`Failed to get videos data: ${error.message}`);
   }
 }
 
-export async function getPostLikes(id: string) {
+export async function getVideoLikes(id: string) {
   try {
     connectDB();
 
-    const userData = await PostModel.findById(id).select("likes").populate({
+    const userData = await VideoModel.findById(id).select("likes").populate({
       path: "likes",
       model: UserModel,
       select: "-password",
@@ -123,43 +118,43 @@ export async function getPostLikes(id: string) {
 
     return JSON.parse(JSON.stringify(userData));
   } catch (error: any) {
-    throw new Error(`Failed to get post likes: ${error.message}`);
+    throw new Error(`Failed to get video likes: ${error.message}`);
   }
 }
 
-export async function getUserPosts({
+export async function getUserVideos({
   id,
   pageNumber = 1,
   pageSize = 20,
   sortBy = "desc",
-}: GetPostsParams) {
+}: GetVideosParams) {
   try {
     connectDB();
 
     const skipAmount = (Number(pageNumber) - 1) * pageSize;
-    const postsQuery = PostModel.find({user: id, public: true})
+    const videosQuery = VideoModel.find({user: id, public: true})
       .sort({createdAt: sortBy})
       .skip(skipAmount)
       .limit(pageSize);
-    const posts = await populatePost(postsQuery);
-    const postsCount = await PostModel.countDocuments({
+    const videos = await populateVideo(videosQuery);
+    const videosCount = await VideoModel.countDocuments({
       user: id,
       public: true,
     });
     return {
-      data: JSON.parse(JSON.stringify(posts)),
-      totalPages: Math.ceil(postsCount / pageSize),
+      data: JSON.parse(JSON.stringify(videos)),
+      totalPages: Math.ceil(videosCount / pageSize),
     };
   } catch (error: any) {
-    throw new Error(`Failed to get user posts data: ${error.message}`);
+    throw new Error(`Failed to get user videos data: ${error.message}`);
   }
 }
 
-export async function getPrivatePost({
+export async function getPrivateVideo({
   pageNumber = 1,
   pageSize = 20,
   sortBy = "desc",
-}: GetPostsParams) {
+}: GetVideosParams) {
   try {
     connectDB();
 
@@ -167,32 +162,32 @@ export async function getPrivatePost({
     if (!user) throw new Error("Unauthorized!");
 
     const skipAmount = (Number(pageNumber) - 1) * pageSize;
-    const postsQuery = PostModel.find({
+    const videosQuery = VideoModel.find({
       user: user._id,
       public: false,
     })
       .sort({createdAt: sortBy})
       .skip(skipAmount)
       .limit(pageSize);
-    const posts = await populatePost(postsQuery);
-    const postsCount = await PostModel.countDocuments({
+    const videos = await populateVideo(videosQuery);
+    const videosCount = await VideoModel.countDocuments({
       user: user._id,
       public: false,
     });
     return {
-      data: JSON.parse(JSON.stringify(posts)),
-      totalPages: Math.ceil(postsCount / pageSize),
+      data: JSON.parse(JSON.stringify(videos)),
+      totalPages: Math.ceil(videosCount / pageSize),
     };
   } catch (error: any) {
-    throw new Error(`Failed to get user private posts: ${error.message}`);
+    throw new Error(`Failed to get user private videos: ${error.message}`);
   }
 }
 
-export async function getLikedPosts({
+export async function getLikedVideos({
   pageNumber = 1,
   pageSize = 20,
   sortBy = "desc",
-}: GetPostsParams) {
+}: GetVideosParams) {
   try {
     connectDB();
 
@@ -200,22 +195,22 @@ export async function getLikedPosts({
     if (!user) throw new Error("Unauthorized!");
 
     const skipAmount = (Number(pageNumber) - 1) * pageSize;
-    const postsQuery = PostModel.find({likes: user._id})
+    const videosQuery = VideoModel.find({likes: user._id})
       .sort({createdAt: sortBy})
       .skip(skipAmount)
       .limit(pageSize);
-    const posts = await populatePost(postsQuery);
-    const postsCount = await PostModel.countDocuments({likes: user._id});
+    const videos = await populateVideo(videosQuery);
+    const videosCount = await VideoModel.countDocuments({likes: user._id});
     return {
-      data: JSON.parse(JSON.stringify(posts)),
-      totalPages: Math.ceil(postsCount / pageSize),
+      data: JSON.parse(JSON.stringify(videos)),
+      totalPages: Math.ceil(videosCount / pageSize),
     };
   } catch (error: any) {
-    throw new Error(`Failed to get user liked posts: ${error.message}`);
+    throw new Error(`Failed to get user liked videos: ${error.message}`);
   }
 }
 
-export async function getSavedPosts() {
+export async function getSavedVideos() {
   try {
     connectDB();
 
@@ -223,10 +218,10 @@ export async function getSavedPosts() {
     if (!user) throw new Error("Unauthorized!");
 
     const userData = await UserModel.findById(user._id)
-      .select("saved")
+      .select("videoSaved")
       .populate({
-        path: "saved",
-        model: PostModel,
+        path: "videoSaved",
+        model: VideoModel,
         populate: [
           {
             path: "user",
@@ -239,15 +234,15 @@ export async function getSavedPosts() {
 
     return JSON.parse(JSON.stringify(userData));
   } catch (error: any) {
-    throw new Error(`Failed to get user saved posts: ${error.message}`);
+    throw new Error(`Failed to get user saved videos: ${error.message}`);
   }
 }
 
-export async function getDiscoverPosts({
+export async function getDiscoverVideos({
   pageNumber = 1,
   pageSize = 20,
   sortBy = "desc",
-}: GetPostsParams) {
+}: GetVideosParams) {
   try {
     connectDB();
 
@@ -257,25 +252,25 @@ export async function getDiscoverPosts({
     const newArr = [...user.followings.map((item) => String(item)), user._id];
 
     const skipAmount = (Number(pageNumber) - 1) * pageSize;
-    const postsQuery = PostModel.find({user: {$nin: newArr}, public: true})
+    const videosQuery = VideoModel.find({user: {$nin: newArr}, public: true})
       .sort({createdAt: sortBy})
       .skip(skipAmount)
       .limit(pageSize);
-    const posts = await populatePost(postsQuery);
-    const postsCount = await PostModel.countDocuments({
+    const videos = await populateVideo(videosQuery);
+    const videosCount = await VideoModel.countDocuments({
       user: {$nin: newArr},
       public: true,
     });
     return {
-      data: JSON.parse(JSON.stringify(posts)),
-      totalPages: Math.ceil(postsCount / pageSize),
+      data: JSON.parse(JSON.stringify(videos)),
+      totalPages: Math.ceil(videosCount / pageSize),
     };
   } catch (error: any) {
-    throw new Error(`Failed to get discover posts data: ${error.message}`);
+    throw new Error(`Failed to get discover videos data: ${error.message}`);
   }
 }
 
-export async function createPost({title, formData, path}: CreatePostParams) {
+export async function createVideo({title, formData, path}: CreateVideoParams) {
   try {
     connectDB();
 
@@ -283,126 +278,129 @@ export async function createPost({title, formData, path}: CreatePostParams) {
     if (!user) throw new Error("Unauthorized.");
 
     const files = formData.getAll("files");
+    if (!files) throw new Error("Image is required.");
 
-    const photos = await uploadToCloudinary(files);
+    const videos = formData.getAll("videos");
+    if (!videos) throw new Error("Image is required.");
 
-    const blurDataPromise = photos.map((photo) =>
-      dynamicBlurDataUrl(photo.secure_url)
-    );
+    const imageData = await uploadToCloudinary(files);
+    const blurData = await dynamicBlurDataUrl(imageData[0].secure_url);
 
-    const blurData = await Promise.all(blurDataPromise);
+    const videoData = await uploadToCloudinary(videos);
 
-    const imageData = photos.map((photo, i) => ({
-      url: photo.secure_url,
-      public_id: photo.public_id,
-      blurHash: blurData[i],
-    }));
-
-    const newPost = new PostModel({
+    const newVideo = new VideoModel({
       user: user._id,
       title,
-      image: imageData,
+      video: {
+        url: videoData[0].secure_url,
+        public_id: videoData[0].public_id,
+      },
+      thumbnail: {
+        url: imageData[0].secure_url,
+        public_id: imageData[0].public_id,
+        blurHash: blurData,
+      },
     });
 
-    await newPost.save();
+    await newVideo.save();
 
     user?.followers &&
       user?.followers.map(async (us: string) => {
         await NotificationModel.create({
           from: user._id,
           user: us,
-          message: `${user?.name} post a image!`,
-          url: `${process.env.NEXTAUTH_URL}/post/${newPost._id}`,
+          message: `${user?.name} create a video!`,
+          url: `${process.env.NEXTAUTH_URL}/video/${newVideo._id}`,
         });
       });
 
     revalidatePath(path);
   } catch (error: any) {
-    throw new Error(`Failed to create post: ${error.message}`);
+    throw new Error(`Failed to create video: ${error.message}`);
   }
 }
 
-export async function updatePostPublic({
+export async function updateVideoPublic({
   id,
   isPublic,
   path,
-}: UpdatePostPublicParams) {
+}: UpdateVideoPublicParams) {
   try {
     connectDB();
 
     const user = await getServerUser();
     if (!user) throw new Error("Unauthorized!");
 
-    const post = await PostModel.findOneAndUpdate(
+    const video = await VideoModel.findOneAndUpdate(
       {_id: id, user: user._id},
       {public: isPublic},
       {new: true}
     );
 
-    if (!post) throw new Error("Post not found.");
+    if (!video) throw new Error("Video not found.");
 
     revalidatePath(path);
   } catch (error: any) {
-    throw new Error(`Failed to update post public: ${error.message}`);
+    throw new Error(`Failed to update video public: ${error.message}`);
   }
 }
 
-export async function likePost({postId, postUserId, path}: LikePostParams) {
+export async function likeVideo({videoId, videoUserId, path}: LikeVideoParams) {
   try {
     connectDB();
 
     const user = await getServerUser();
     if (!user) throw new Error("Unauthorized!");
 
-    const checkAlreadyLiked = await PostModel.find({
-      _id: postId,
+    const checkAlreadyLiked = await VideoModel.find({
+      _id: videoId,
       likes: user._id,
     });
     if (checkAlreadyLiked.length > 0) return;
 
-    const like = await PostModel.findOneAndUpdate(
-      {_id: postId},
+    const like = await VideoModel.findOneAndUpdate(
+      {_id: videoId},
       {$push: {likes: user._id}},
       {new: true}
     );
-    if (!like) throw new Error("This post does not exists.");
+    if (!like) throw new Error("This video does not exists.");
 
-    if (postUserId != user._id) {
+    if (videoUserId != user._id) {
       await NotificationModel.create({
         from: user._id,
-        user: postUserId,
-        message: `${user.name} liked your post!`,
-        url: `${process.env.NEXTAUTH_URL}/post/${like._id}`,
+        user: videoUserId,
+        message: `${user.name} liked your video!`,
+        url: `${process.env.NEXTAUTH_URL}/video/${like._id}`,
       });
     }
 
     revalidatePath(path);
   } catch (error: any) {
-    throw new Error(`Failed to like post: ${error.message}`);
+    throw new Error(`Failed to like video: ${error.message}`);
   }
 }
 
-export async function dislikePost({postId, path}: DislikePostParams) {
+export async function dislikeVideo({videoId, path}: DislikeVideoParams) {
   try {
     connectDB();
 
     const user = await getServerUser();
     if (!user) throw new Error("Unauthorized!");
 
-    const like = await PostModel.findOneAndUpdate(
-      {_id: postId},
+    const like = await VideoModel.findOneAndUpdate(
+      {_id: videoId},
       {$pull: {likes: user._id}},
       {new: true}
     );
-    if (!like) throw new Error("This post does not exists.");
+    if (!like) throw new Error("This video does not exists.");
 
     revalidatePath(path);
   } catch (error: any) {
-    throw new Error(`Failed to dislike post: ${error.message}`);
+    throw new Error(`Failed to dislike video: ${error.message}`);
   }
 }
 
-export async function savePost({postId, path}: SavePostParams) {
+export async function saveVideo({videoId, path}: SaveVideoParams) {
   try {
     connectDB();
 
@@ -411,24 +409,24 @@ export async function savePost({postId, path}: SavePostParams) {
 
     const checkAlreadySaved = await UserModel.find({
       _id: user._id,
-      saved: postId,
+      videoSaved: videoId,
     });
     if (checkAlreadySaved.length > 0) return;
 
     const save = await UserModel.findOneAndUpdate(
       {_id: user._id},
-      {$push: {saved: postId}},
+      {$push: {videoSaved: videoId}},
       {new: true}
     );
-    if (!save) throw new Error("This post does not exists.");
+    if (!save) throw new Error("This video does not exists.");
 
     revalidatePath(path);
   } catch (error: any) {
-    throw new Error(`Failed to save post: ${error.message}`);
+    throw new Error(`Failed to save video: ${error.message}`);
   }
 }
 
-export async function unSavePost({postId, path}: DislikePostParams) {
+export async function unSaveVideo({videoId, path}: DislikeVideoParams) {
   try {
     connectDB();
 
@@ -437,13 +435,13 @@ export async function unSavePost({postId, path}: DislikePostParams) {
 
     const save = await UserModel.findOneAndUpdate(
       {_id: user._id},
-      {$pull: {saved: postId}},
+      {$pull: {videoSaved: videoId}},
       {new: true}
     );
-    if (!save) throw new Error("This post does not exists.");
+    if (!save) throw new Error("This video does not exists.");
 
     revalidatePath(path);
   } catch (error: any) {
-    throw new Error(`Failed to unsave post: ${error.message}`);
+    throw new Error(`Failed to unsave video: ${error.message}`);
   }
 }

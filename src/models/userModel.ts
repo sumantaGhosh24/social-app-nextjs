@@ -1,6 +1,8 @@
 import {Schema, model, models} from "mongoose";
 
 import {IPost} from "./postModel";
+import {IAudio} from "./audioModel";
+import {IVideo} from "./videoModel";
 
 export interface IUser extends Document {
   _id: string;
@@ -22,6 +24,8 @@ export interface IUser extends Document {
   followers: any[];
   followings: any[];
   saved: IPost[];
+  audioSaved: IAudio[];
+  videoSaved: IVideo[];
   dob: string;
   gender: string;
   city: string;
@@ -82,6 +86,18 @@ const UserSchema = new Schema(
       },
     ],
     saved: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Post",
+      },
+    ],
+    audioSaved: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Post",
+      },
+    ],
+    videoSaved: [
       {
         type: Schema.Types.ObjectId,
         ref: "Post",

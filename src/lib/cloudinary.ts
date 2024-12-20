@@ -29,6 +29,7 @@ export async function uploadToCloudinary(files: File[]) {
   const multiplePhotosPromise = newFiles.map((file) =>
     cloudinary.v2.uploader.upload(file.filepath, {
       folder: "social-app-nextjs",
+      resource_type: "auto",
     })
   );
   const results = await Promise.all(multiplePhotosPromise);

@@ -6,7 +6,7 @@ export default async function middleware(req:NextRequest) {
 
   const session = await getToken({req, secret: process.env.NEXTAUTH_SECRET});
 
-  if (!session && (path === "/" || path === "/notifications" || path === "/search" || path === "/discover" || path.startsWith("/profile") || path.startsWith("/post"))) {
+  if (!session && (path === "/" || path === "/audios" || path === "/videos" || path === "/notifications" || path === "/search" || path === "/discover" || path === "/discover-audios" || path === "/discover-videos" || path.startsWith("/profile") || path.startsWith("/post") || path.startsWith("/audio") || path.startsWith("video"))) {
     return NextResponse.redirect(new URL("/login", req.url));
   } else if (session && (path === "/login" || path === "/register")) {
     return NextResponse.redirect(new URL("/", req.url));

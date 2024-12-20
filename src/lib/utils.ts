@@ -36,6 +36,58 @@ export function validFiles(file: any) {
   };
 }
 
+export function validAudio(file: any) {
+  const imgTypes = ["audio/mpeg", "audio/ogg", "audio/wav"];
+  if (!file.type.startsWith("audio")) {
+    return {
+      status: "error",
+      message: "Invalid audio.",
+    };
+  }
+  if (!imgTypes.includes(file.type)) {
+    return {
+      status: "error",
+      message: "Invalid audio format (required type mpeg, ogg and wav).",
+    };
+  }
+  if (file.size > 5 * 1024 * 1024) {
+    return {
+      status: "error",
+      message: "Audio is too large (required size 1mb).",
+    };
+  }
+  return {
+    status: "success",
+    fileUpload: file,
+  };
+}
+
+export function validVideo(file: any) {
+  const imgTypes = ["video/mp4", "video/webm", "video/ogg"];
+  if (!file.type.startsWith("video")) {
+    return {
+      status: "error",
+      message: "Invalid video.",
+    };
+  }
+  if (!imgTypes.includes(file.type)) {
+    return {
+      status: "error",
+      message: "Invalid video format (required type mp4, webm and ogg).",
+    };
+  }
+  if (file.size > 5 * 1024 * 1024) {
+    return {
+      status: "error",
+      message: "Video is too large (required size 1mb).",
+    };
+  }
+  return {
+    status: "success",
+    fileUpload: file,
+  };
+}
+
 const baseURL = process.env.NEXTAUTH_URL;
 
 export async function dynamicBlurDataUrl(url: string) {

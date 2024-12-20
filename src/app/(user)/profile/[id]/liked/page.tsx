@@ -2,7 +2,11 @@ import {redirect} from "next/navigation";
 
 import getServerUser from "@/actions/getServerUser";
 import {getLikedPosts} from "@/actions/postActions";
+import {getLikedAudios} from "@/actions/audioActions";
+import {getLikedVideos} from "@/actions/videoActions";
 import PostFeed from "@/app/(user)/_components/post-feed";
+import AudioFeed from "@/app/(user)/_components/audio-feed";
+import VideoFeed from "@/app/(user)/_components/video-feed";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 
 export const metadata = {
@@ -26,6 +30,10 @@ const LikedPost = async ({params, searchParams}: LikedPostProps) => {
 
   const posts = await getLikedPosts({pageNumber: Number(page) || 1});
 
+  const audios = await getLikedAudios({pageNumber: Number(page) || 1});
+
+  const videos = await getLikedVideos({pageNumber: Number(page) || 1});
+
   return (
     <>
       <Tabs defaultValue="image" className="w-full ml-5">
@@ -44,8 +52,26 @@ const LikedPost = async ({params, searchParams}: LikedPostProps) => {
             user={JSON.parse(JSON.stringify(serverUser))}
           />
         </TabsContent>
-        <TabsContent value="audio">Change your password here.</TabsContent>
-        <TabsContent value="video">Change your password here.</TabsContent>
+        <TabsContent value="audio">
+          <AudioFeed
+            data={audios?.data}
+            emptyTitle="No audio found"
+            emptyStateSubtext="Try again later"
+            page={Number(page) || 1}
+            totalPages={audios?.totalPages}
+            user={JSON.parse(JSON.stringify(serverUser))}
+          />
+        </TabsContent>
+        <TabsContent value="video">
+          <VideoFeed
+            data={videos?.data}
+            emptyTitle="No video found"
+            emptyStateSubtext="Try again later"
+            page={Number(page) || 1}
+            totalPages={videos?.totalPages}
+            user={JSON.parse(JSON.stringify(serverUser))}
+          />
+        </TabsContent>
       </Tabs>
     </>
   );

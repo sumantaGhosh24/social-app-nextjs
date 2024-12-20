@@ -31,7 +31,7 @@ const DialogProvider = ({
           <DialogTitle>{title}</DialogTitle>
           {description && <DialogDescription>{description}</DialogDescription>}
         </DialogHeader>
-        <ScrollArea className="h-[70vh]">{children}</ScrollArea>
+        <ScrollArea className="max-h-[70vh]">{children}</ScrollArea>
       </DialogContent>
     </Dialog>
   );

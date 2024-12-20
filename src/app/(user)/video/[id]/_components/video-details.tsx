@@ -1,7 +1,6 @@
 "use client";
 
 import {useState} from "react";
-import Image from "next/image";
 import {usePathname} from "next/navigation";
 import {
   Heart,
@@ -14,23 +13,18 @@ import {
 } from "lucide-react";
 import {ShareSocial} from "react-share-social";
 
-import {updatePostPublic} from "@/actions/postActions";
-import useLike from "@/hooks/use-like";
-import useSave from "@/hooks/use-save";
-import {IPost} from "@/models/postModel";
+import {updateVideoPublic} from "@/actions/videoActions";
+import useLikeVideo from "@/hooks/use-like-video";
+import useSaveVideo from "@/hooks/use-save-video";
+import {IVideo} from "@/models/videoModel";
 import {IUser} from "@/models/userModel";
 import {IComment} from "@/models/commentModel";
 import {FRONTEND_URL} from "@/lib/config";
+import CreateCommentForm from "@/app/(user)/_components/create-comment-form";
+import CommentCard from "@/app/(user)/_components/comments-card";
 import ProfileCard from "@/app/(user)/_components/profile-card";
 import DialogProvider from "@/components/dialog-provider";
 import {useToast} from "@/hooks/use-toast";
-import {
-  CarouselNext,
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -40,31 +34,28 @@ import {
 import {Button} from "@/components/ui/button";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 
-import CreateCommentForm from "@/app/(user)/_components/create-comment-form";
-import CommentCard from "@/app/(user)/_components/comments-card";
-
-interface PostDetailsProps {
-  post: IPost;
+interface VideoDetailsProps {
+  video: IVideo;
   user: IUser;
   likes: IUser[];
   comments: IComment[];
 }
 
-const PostDetails = ({post, user, likes, comments}: PostDetailsProps) => {
+const VideoDetails = ({video, user, likes, comments}: VideoDetailsProps) => {
   const [loading, setLoading] = useState(false);
 
   const path = usePathname();
 
   const {toast} = useToast();
 
-  const {hasLiked, toggleLike} = useLike({
-    postId: post._id,
+  const {hasLiked, toggleLike} = useLikeVideo({
+    videoId: video._id,
     userId: user._id,
-    data: post,
+    data: video,
   });
 
-  const {isSave, toggleSave} = useSave({
-    postId: post._id,
+  const {isSave, toggleSave} = useSaveVideo({
+    videoId: video._id,
     currentUser: user,
   });
 
@@ -72,9 +63,9 @@ const PostDetails = ({post, user, likes, comments}: PostDetailsProps) => {
     setLoading(true);
 
     try {
-      await updatePostPublic({id: post._id, isPublic: !post.public, path});
+      await updateVideoPublic({id: video._id, isPublic: !video.public, path});
 
-      toast({title: "Successfully change post visibility!"});
+      toast({title: "Successfully change video visibility!"});
     } catch (error: any) {
       toast({
         title: "Something went wrong!",
@@ -100,29 +91,12 @@ const PostDetails = ({post, user, likes, comments}: PostDetailsProps) => {
 
   return (
     <div className="bg-gray-100 p-5 hover:bg-gray-200 dark:bg-gray-700 my-5 mx-3 rounded">
-      {post.title && (
-        <h2 className="text-xl font-bold capitalize">{post.title}</h2>
-      )}
-      <Carousel>
-        <CarouselContent>
-          {post.image.map((img) => (
-            <CarouselItem key={img.public_id}>
-              <Image
-                src={img.url}
-                height={400}
-                width={1000}
-                alt={img.public_id}
-                placeholder="blur"
-                blurDataURL={img.blurHash}
-                priority
-                className="w-full h-[350px] my-3 rounded"
-              />
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
-      </Carousel>
+      <h2 className="text-xl font-bold capitalize">{video.title}</h2>
+      <video controls poster={video.thumbnail.url} className="w-full rounded">
+        <source src={video.video.url} type="video/mp4" />
+        <source src={video.video.url} type="video/webm" />
+        <source src={video.video.url} type="video/ogg" />
+      </video>
       <div className="flex flex-row items-start gap-3 mb-5">
         <div className="w-full">
           <div className="flex flex-row items-center mt-3 gap-10">
@@ -131,7 +105,7 @@ const PostDetails = ({post, user, likes, comments}: PostDetailsProps) => {
               className="flex flex-row items-center text-neutral-500 gap-2 cursor-pointer"
             >
               {LikeIcon}
-              <p>{post?.likes?.length || 0}</p>
+              <p>{video?.likes?.length || 0}</p>
             </div>
             <div
               onClick={onSave}
@@ -145,11 +119,11 @@ const PostDetails = ({post, user, likes, comments}: PostDetailsProps) => {
                   <Share />
                 </div>
               }
-              title="Share Post"
-              description="Share post to grow our community"
+              title="Share Video"
+              description="Share video to grow our community"
             >
               <ShareSocial
-                url={`${FRONTEND_URL}/post/${post._id}`}
+                url={`${FRONTEND_URL}/video/${video._id}`}
                 socialTypes={[
                   "facebook",
                   "twitter",
@@ -160,7 +134,7 @@ const PostDetails = ({post, user, likes, comments}: PostDetailsProps) => {
                 ]}
               />
             </DialogProvider>
-            {post.user?._id === user._id && (
+            {video.user?._id === user._id && (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline">
@@ -174,7 +148,7 @@ const PostDetails = ({post, user, likes, comments}: PostDetailsProps) => {
                     className="cursor-pointer disabled:cursor-not-allowed"
                   >
                     <Eye />
-                    <span>Change to {post.public ? "Private" : "Public"}</span>
+                    <span>Change to {video.public ? "Private" : "Public"}</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -182,7 +156,7 @@ const PostDetails = ({post, user, likes, comments}: PostDetailsProps) => {
           </div>
         </div>
       </div>
-      <ProfileCard user={post.user} currentUser={user} />
+      <ProfileCard user={video.user} currentUser={user} />
       <Tabs defaultValue="comments" className="w-full mt-10">
         <TabsList>
           <TabsTrigger value="likes">Likes</TabsTrigger>
@@ -194,7 +168,7 @@ const PostDetails = ({post, user, likes, comments}: PostDetailsProps) => {
           ))}
         </TabsContent>
         <TabsContent value="comments">
-          <CreateCommentForm postId={post._id} postOwnerId={post.user?._id} />
+          <CreateCommentForm postId={video._id} postOwnerId={video.user?._id} />
           {comments.length > 0 ? (
             <div className="p-3">
               <h2 className="text-2xl font-bold mb-5">Comments</h2>
@@ -203,7 +177,7 @@ const PostDetails = ({post, user, likes, comments}: PostDetailsProps) => {
                   key={comment._id}
                   comment={comment}
                   user={user._id}
-                  postOwnerId={post.user?._id}
+                  postOwnerId={video.user?._id}
                 />
               ))}
             </div>
@@ -219,4 +193,4 @@ const PostDetails = ({post, user, likes, comments}: PostDetailsProps) => {
   );
 };
 
-export default PostDetails;
+export default VideoDetails;
