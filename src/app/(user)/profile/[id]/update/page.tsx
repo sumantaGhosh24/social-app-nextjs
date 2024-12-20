@@ -27,7 +27,16 @@ const UpdateProfile = async ({params}: UpdateProfileProps) => {
 
   return (
     <>
-      <UpdateProfileForm user={user} />
+      <UpdateProfileForm
+        user={user}
+        userLinks={JSON.parse(
+          JSON.stringify(
+            user.socialLinks.length > 0
+              ? user.socialLinks
+              : [{title: "", link: ""}]
+          )
+        )}
+      />
     </>
   );
 };

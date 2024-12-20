@@ -1,12 +1,14 @@
 "use client";
 
-import {useState} from "react";
+import {useState, ChangeEvent} from "react";
 import {usePathname} from "next/navigation";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {z} from "zod";
 import {format} from "date-fns";
 import {CalendarIcon} from "lucide-react";
+import {DndProvider} from "react-dnd";
+import {HTML5Backend} from "react-dnd-html5-backend";
 
 import {updateUser} from "@/actions/userActions";
 import {IUser} from "@/models/userModel";
@@ -33,11 +35,23 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import LinksForm from "./links-form";
+
 interface UpdateProfileFormProps {
   user: IUser;
+  userLinks: {
+    title: string;
+    link: string;
+  }[];
 }
 
-const UpdateProfileForm = ({user}: UpdateProfileFormProps) => {
+interface Link {
+  title: string;
+  link: string;
+}
+
+const UpdateProfileForm = ({user, userLinks}: UpdateProfileFormProps) => {
+  const [links, setLinks] = useState<Link[]>(userLinks);
   const [loading, setLoading] = useState(false);
 
   const {primaryColor} = usePrimaryColor();
@@ -60,6 +74,26 @@ const UpdateProfileForm = ({user}: UpdateProfileFormProps) => {
     },
   });
 
+  const handleInputChange = (
+    index: number,
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
+    const {name, value} = event.target;
+    const list = [...links];
+    list[index][name as keyof Link] = value;
+    setLinks(list);
+  };
+
+  const handleAddClick = () => {
+    setLinks([...links, {title: "", link: ""}]);
+  };
+
+  const handleRemoveClick = (index: number) => {
+    const list = [...links];
+    list.splice(index, 1);
+    setLinks(list);
+  };
+
   const onSubmit = async (values: z.infer<typeof UserUpdateValidation>) => {
     setLoading(true);
 
@@ -75,6 +109,7 @@ const UpdateProfileForm = ({user}: UpdateProfileFormProps) => {
         country: values.country,
         zip: values.zip,
         addressline: values.addressline,
+        socialLinks: links,
         path,
       });
 
@@ -313,6 +348,15 @@ const UpdateProfileForm = ({user}: UpdateProfileFormProps) => {
                 )}
               />
             </div>
+            <DndProvider backend={HTML5Backend}>
+              <LinksForm
+                links={links}
+                setLinks={setLinks}
+                handleInputChange={handleInputChange}
+                handleAddClick={handleAddClick}
+                handleRemoveClick={handleRemoveClick}
+              />
+            </DndProvider>
             <Button
               type="submit"
               disabled={loading}

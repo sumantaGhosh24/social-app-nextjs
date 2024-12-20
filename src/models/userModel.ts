@@ -33,6 +33,10 @@ export interface IUser extends Document {
   country: string;
   zip: string;
   addressline: string;
+  socialLinks: {
+    title: string;
+    link: string;
+  }[];
   hasNotification: boolean;
   role: "user" | "admin";
   createdAt: Date;
@@ -124,6 +128,12 @@ const UserSchema = new Schema(
     addressline: {
       type: String,
     },
+    socialLinks: [
+      {
+        title: String,
+        link: String,
+      },
+    ],
     hasNotification: {
       type: Boolean,
       default: false,

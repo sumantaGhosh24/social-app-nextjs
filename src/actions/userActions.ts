@@ -46,6 +46,10 @@ interface UpdateUserParams {
   country: string;
   zip: string;
   addressline: string;
+  socialLinks: {
+    title: string;
+    link: string;
+  }[];
   path: string;
 }
 
@@ -195,6 +199,7 @@ export async function updateUser({
   country,
   zip,
   addressline,
+  socialLinks,
   path,
 }: UpdateUserParams) {
   try {
@@ -210,6 +215,7 @@ export async function updateUser({
       country: country.toLowerCase(),
       zip,
       addressline: addressline.toLowerCase(),
+      socialLinks,
     });
 
     revalidatePath(path);

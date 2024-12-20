@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 
 import useFollow from "@/hooks/use-follow";
 import {IUser} from "@/models/userModel";
@@ -108,6 +109,23 @@ const ProfileDetails = ({user, currentUser}: ProfileDetailsProps) => {
             {new Date(user.createdAt).toLocaleDateString()}
           </span>
         </h3>
+        {user.socialLinks.length > 0 && (
+          <div className="flex items-center gap-3">
+            <h4 className="text-lg font-bold">Social Links: </h4>
+            <div className="flex gap-3">
+              {user.socialLinks.map((link, i) => (
+                <Link
+                  key={i}
+                  href={link.link}
+                  target="_blank"
+                  className="text-sm font-medium text-blue-800 hover:underline capitalize"
+                >
+                  {link.title}
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
