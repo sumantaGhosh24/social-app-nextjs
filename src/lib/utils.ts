@@ -165,3 +165,13 @@ export function removeKeysFromQuery({
     {skipNull: true}
   );
 }
+
+export function formatFloatingNumber(number: number) {
+  const roundedNumber = Math.round(number * 100) / 100;
+  const formattedNumber = roundedNumber.toFixed(2);
+  return formattedNumber;
+}
+
+export function getSum(total: number, num: number) {
+  return total + Math.ceil(num);
+}

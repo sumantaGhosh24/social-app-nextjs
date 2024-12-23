@@ -1,6 +1,7 @@
 import "./globals.css";
 import {Inter as FontSans} from "next/font/google";
 import type {Metadata} from "next";
+import Script from "next/script";
 
 import {cn} from "@/lib/utils";
 import {Toaster} from "@/components/ui/toaster";
@@ -53,6 +54,7 @@ export default async function RootLayout({
           </PrimaryColorProvider>
         </ThemeProvider>
       </body>
+      <Script src="https://checkout.razorpay.com/v1/checkout.js" />
     </html>
   );
 }

@@ -116,16 +116,45 @@ const Header = ({user}: {user: any}) => {
                       </NavigationMenuItem>
                     </NavigationMenuList>
                   </NavigationMenu>
+                  <NavigationMenu>
+                    <NavigationMenuList>
+                      <NavigationMenuItem>
+                        <NavigationMenuTrigger>Profile</NavigationMenuTrigger>
+                        <NavigationMenuContent>
+                          {[
+                            {
+                              id: 1,
+                              name: "Profile",
+                              url: `/profile/${user._id}`,
+                            },
+                            {id: 2, name: "My Reviews", url: "/reviews/my"},
+                            {id: 3, name: "My Orders", url: "/orders/my"},
+                            {
+                              id: 4,
+                              name: user?.hasNotification
+                                ? "Notifications*"
+                                : "Notifications",
+                              url: "/notifications",
+                            },
+                            {id: 5, name: "Search Users", url: "/search"},
+                          ].map((item) => (
+                            <NavigationMenuItem key={item.id} className="my-3">
+                              <Link href={item.url} legacyBehavior passHref>
+                                <NavigationMenuLink
+                                  className={navigationMenuTriggerStyle()}
+                                >
+                                  {item.name}
+                                </NavigationMenuLink>
+                              </Link>
+                            </NavigationMenuItem>
+                          ))}
+                        </NavigationMenuContent>
+                      </NavigationMenuItem>
+                    </NavigationMenuList>
+                  </NavigationMenu>
                   {[
-                    {id: 1, name: "Profile", url: `/profile/${user._id}`},
-                    {id: 2, name: "Search Users", url: "/search"},
-                    {
-                      id: 3,
-                      name: user?.hasNotification
-                        ? "Notifications*"
-                        : "Notifications",
-                      url: "/notifications",
-                    },
+                    {id: 1, name: "Cart", url: "/cart"},
+                    {id: 2, name: "Shop", url: "/shop"},
                   ].map((item) => (
                     <NavigationMenuItem key={item.id}>
                       <Link href={item.url} legacyBehavior passHref>
@@ -137,6 +166,41 @@ const Header = ({user}: {user: any}) => {
                       </Link>
                     </NavigationMenuItem>
                   ))}
+                  {user.role === "admin" && (
+                    <>
+                      <NavigationMenu>
+                        <NavigationMenuList>
+                          <NavigationMenuItem>
+                            <NavigationMenuTrigger>
+                              Manage
+                            </NavigationMenuTrigger>
+                            <NavigationMenuContent>
+                              {[
+                                {id: 1, name: "Users", url: "/users"},
+                                {id: 2, name: "Categories", url: "/categories"},
+                                {id: 3, name: "Products", url: "/products"},
+                                {id: 4, name: "Reviews", url: "/reviews"},
+                                {id: 5, name: "Orders", url: "/orders"},
+                              ].map((item) => (
+                                <NavigationMenuItem
+                                  key={item.id}
+                                  className="my-3"
+                                >
+                                  <Link href={item.url} legacyBehavior passHref>
+                                    <NavigationMenuLink
+                                      className={navigationMenuTriggerStyle()}
+                                    >
+                                      {item.name}
+                                    </NavigationMenuLink>
+                                  </Link>
+                                </NavigationMenuItem>
+                              ))}
+                            </NavigationMenuContent>
+                          </NavigationMenuItem>
+                        </NavigationMenuList>
+                      </NavigationMenu>
+                    </>
+                  )}
                   <Button
                     variant="secondary"
                     onClick={() => signOut()}
