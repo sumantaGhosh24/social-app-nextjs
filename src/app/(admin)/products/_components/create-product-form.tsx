@@ -132,7 +132,7 @@ const CreateProductForm = ({categories}: CreateProductFormProps) => {
   return (
     <Form {...form}>
       <form
-        className="flex flex-col justify-start gap-10"
+        className="flex flex-col justify-start gap-5"
         onSubmit={form.handleSubmit(onSubmit)}
         onDrop={handleDrop}
         onDrag={(e) => e.preventDefault()}

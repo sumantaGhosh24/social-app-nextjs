@@ -16,31 +16,11 @@ export interface IComment extends Document {
 
 const CommentSchema = new Schema(
   {
-    postedBy: {
-      type: Schema.Types.ObjectId,
-      required: true,
-      ref: "User",
-    },
-    postId: {
-      type: Schema.Types.ObjectId,
-      required: true,
-      ref: "Post",
-    },
-    message: {
-      type: String,
-      required: true,
-    },
-    parentComment: {
-      type: Schema.Types.ObjectId,
-      ref: "Comment",
-      default: null,
-    },
-    replies: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Comment",
-      },
-    ],
+    postedBy: {type: Schema.Types.ObjectId, required: true, ref: "User"},
+    postId: {type: Schema.Types.ObjectId, required: true, ref: "Post"},
+    message: {type: String, required: true},
+    parentComment: {type: Schema.Types.ObjectId, ref: "Comment", default: null},
+    replies: [{type: Schema.Types.ObjectId, ref: "Comment"}],
   },
   {timestamps: true}
 );

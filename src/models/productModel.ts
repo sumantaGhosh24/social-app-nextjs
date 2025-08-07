@@ -22,41 +22,13 @@ export interface IProduct extends Document {
 
 const ProductSchema = new Schema(
   {
-    owner: {
-      type: Schema.Types.ObjectId,
-      required: true,
-      ref: "User",
-    },
-    title: {
-      type: String,
-      required: true,
-    },
-    description: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    content: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    image: [
-      {
-        url: String,
-        public_id: String,
-        blurHash: String,
-      },
-    ],
-    category: {
-      type: Schema.Types.ObjectId,
-      required: true,
-      ref: "Category",
-    },
-    price: {
-      type: String,
-      required: true,
-    },
+    owner: {type: Schema.Types.ObjectId, required: true, ref: "User"},
+    title: {type: String, required: true},
+    description: {type: String, required: true, trim: true},
+    content: {type: String, required: true, trim: true},
+    image: [{url: String, public_id: String, blurHash: String}],
+    category: {type: Schema.Types.ObjectId, required: true, ref: "Category"},
+    price: {type: String, required: true},
   },
   {timestamps: true}
 );

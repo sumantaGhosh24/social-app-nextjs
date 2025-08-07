@@ -169,7 +169,7 @@ const CreateAudio = ({user}: CreateAudioProps) => {
         <div>
           <Form {...form}>
             <form
-              className="flex flex-col justify-start gap-10"
+              className="flex flex-col justify-start gap-5"
               onSubmit={form.handleSubmit(onSubmit)}
             >
               <h1 className="text-2xl font-bold">Create Audio</h1>

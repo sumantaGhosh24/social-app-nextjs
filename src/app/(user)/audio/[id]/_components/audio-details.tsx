@@ -20,7 +20,6 @@ import useSaveAudio from "@/hooks/use-save-audio";
 import {IUser} from "@/models/userModel";
 import {IComment} from "@/models/commentModel";
 import {IAudio} from "@/models/audioModel";
-import {FRONTEND_URL} from "@/lib/config";
 import CreateCommentForm from "@/app/(user)/_components/create-comment-form";
 import CommentCard from "@/app/(user)/_components/comments-card";
 import ProfileCard from "@/app/(user)/_components/profile-card";
@@ -134,7 +133,7 @@ const AudioDetails = ({audio, user, likes, comments}: AudioDetailsProps) => {
               description="Share audio to grow our community"
             >
               <ShareSocial
-                url={`${FRONTEND_URL}/audio/${audio._id}`}
+                url={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/audio/${audio._id}`}
                 socialTypes={[
                   "facebook",
                   "twitter",

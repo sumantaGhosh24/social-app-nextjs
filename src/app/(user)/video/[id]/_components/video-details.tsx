@@ -19,7 +19,6 @@ import useSaveVideo from "@/hooks/use-save-video";
 import {IVideo} from "@/models/videoModel";
 import {IUser} from "@/models/userModel";
 import {IComment} from "@/models/commentModel";
-import {FRONTEND_URL} from "@/lib/config";
 import CreateCommentForm from "@/app/(user)/_components/create-comment-form";
 import CommentCard from "@/app/(user)/_components/comments-card";
 import ProfileCard from "@/app/(user)/_components/profile-card";
@@ -123,7 +122,7 @@ const VideoDetails = ({video, user, likes, comments}: VideoDetailsProps) => {
               description="Share video to grow our community"
             >
               <ShareSocial
-                url={`${FRONTEND_URL}/video/${video._id}`}
+                url={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/video/${video._id}`}
                 socialTypes={[
                   "facebook",
                   "twitter",

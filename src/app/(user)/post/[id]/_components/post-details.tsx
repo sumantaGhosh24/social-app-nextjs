@@ -20,7 +20,6 @@ import useSave from "@/hooks/use-save";
 import {IPost} from "@/models/postModel";
 import {IUser} from "@/models/userModel";
 import {IComment} from "@/models/commentModel";
-import {FRONTEND_URL} from "@/lib/config";
 import ProfileCard from "@/app/(user)/_components/profile-card";
 import DialogProvider from "@/components/dialog-provider";
 import {useToast} from "@/hooks/use-toast";
@@ -149,7 +148,7 @@ const PostDetails = ({post, user, likes, comments}: PostDetailsProps) => {
               description="Share post to grow our community"
             >
               <ShareSocial
-                url={`${FRONTEND_URL}/post/${post._id}`}
+                url={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/post/${post._id}`}
                 socialTypes={[
                   "facebook",
                   "twitter",

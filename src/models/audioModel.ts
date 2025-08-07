@@ -23,34 +23,12 @@ export interface IAudio extends Document {
 
 const AudioSchema = new Schema(
   {
-    user: {
-      type: Schema.Types.ObjectId,
-      required: true,
-      ref: "User",
-    },
-    title: {
-      type: String,
-      trim: true,
-    },
-    audio: {
-      url: String,
-      public_id: String,
-    },
-    thumbnail: {
-      url: String,
-      public_id: String,
-      blurHash: String,
-    },
-    likes: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
-    public: {
-      type: Boolean,
-      default: true,
-    },
+    user: {type: Schema.Types.ObjectId, required: true, ref: "User"},
+    title: {type: String, trim: true},
+    audio: {url: String, public_id: String},
+    thumbnail: {url: String, public_id: String, blurHash: String},
+    likes: [{type: Schema.Types.ObjectId, ref: "User"}],
+    public: {type: Boolean, default: true},
   },
   {timestamps: true}
 );

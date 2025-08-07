@@ -94,7 +94,7 @@ const ProfileImageForm = ({user}: ProfileImageFormProps) => {
     <div className="my-10 flex w-full items-center justify-center">
       <div className="w-[95%] space-y-4 rounded-lg p-5 shadow-lg shadow-black dark:shadow-white">
         <form
-          className="flex flex-col justify-start gap-10"
+          className="flex flex-col justify-start gap-5"
           onSubmit={handleSubmit}
           onDrop={handleDrop}
           onDrag={(e) => e.preventDefault()}

@@ -37,22 +37,11 @@ export interface IOrder extends Document {
 
 const OrderSchema = new Schema(
   {
-    user: {
-      type: Schema.Types.ObjectId,
-      required: true,
-      ref: "User",
-    },
+    user: {type: Schema.Types.ObjectId, required: true, ref: "User"},
     orderItems: [
       {
-        product: {
-          type: Schema.Types.ObjectId,
-          required: true,
-          ref: "Product",
-        },
-        quantity: {
-          type: Number,
-          required: true,
-        },
+        product: {type: Schema.Types.ObjectId, required: true, ref: "Product"},
+        quantity: {type: Number, required: true},
       },
     ],
     paymentResult: {
@@ -63,58 +52,23 @@ const OrderSchema = new Schema(
       razorpay_signature: {type: String},
     },
     shippingAddress: {
-      address: {
-        type: String,
-        required: true,
-      },
-      city: {
-        type: String,
-        required: true,
-      },
-      zip: {
-        type: String,
-        required: true,
-      },
-      country: {
-        type: String,
-        required: true,
-      },
-      state: {
-        type: String,
-        required: true,
-      },
+      address: {type: String, required: true},
+      city: {type: String, required: true},
+      zip: {type: String, required: true},
+      country: {type: String, required: true},
+      state: {type: String, required: true},
     },
     orderStatus: {
       type: String,
       enum: ["pending", "completed", "cancelled", "refund"],
       required: true,
     },
-    price: {
-      type: Number,
-      required: true,
-      default: 0.0,
-    },
-    taxPrice: {
-      type: Number,
-      required: true,
-      default: 0.0,
-    },
-    shippingPrice: {
-      type: Number,
-      required: true,
-      default: 0.0,
-    },
-    totalPrice: {
-      type: Number,
-      required: true,
-      default: 0.0,
-    },
-    paidAt: {
-      type: Date,
-    },
-    deliverAt: {
-      type: Date,
-    },
+    price: {type: Number, required: true, default: 0.0},
+    taxPrice: {type: Number, required: true, default: 0.0},
+    shippingPrice: {type: Number, required: true, default: 0.0},
+    totalPrice: {type: Number, required: true, default: 0.0},
+    paidAt: {type: Date},
+    deliverAt: {type: Date},
   },
   {timestamps: true}
 );

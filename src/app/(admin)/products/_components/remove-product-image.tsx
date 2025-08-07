@@ -25,9 +25,7 @@ const RemoveProductImage = ({product}: RemoveProductImageProps) => {
   const handleDelete = async (publicId: string) => {
     setLoading(true);
     try {
-      setFiles((files) =>
-        files.filter((file, i) => file.public_id !== publicId)
-      );
+      setFiles((files) => files.filter((file) => file.public_id !== publicId));
 
       await deleteProductImage({
         id: product._id,
@@ -50,7 +48,7 @@ const RemoveProductImage = ({product}: RemoveProductImageProps) => {
   return (
     <div className="flex w-full items-center justify-center my-10">
       <div className="min-w-[80%] space-y-4 rounded-lg p-5 shadow-lg shadow-black dark:shadow-white">
-        <div className="flex flex-col justify-start gap-10">
+        <div className="flex flex-col justify-start gap-5">
           <h1 className="mb-5 text-2xl font-bold">Remove Product Image</h1>
           {loading && (
             <h2 className="my-5 text-center text-lg font-bold text-red-700">

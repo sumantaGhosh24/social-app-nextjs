@@ -6,7 +6,6 @@ import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {z} from "zod";
 
-import {RAZORPAY_KEY} from "@/lib/config";
 import {formatFloatingNumber, getSum} from "@/lib/utils";
 import {CreateOrderValidation} from "@/validations/order";
 import {ICart} from "@/models/cartModel";
@@ -47,20 +46,22 @@ const Checkout = ({cart}: CheckoutProps) => {
   });
 
   const calculatePrice = () => {
-    let prices = [];
-    let taxPrices = [];
-    let shippingPrices = [];
-    let totalPrices = [];
+    const prices = [];
+    const taxPrices = [];
+    const shippingPrices = [];
+    const totalPrices = [];
     for (let i = 0; i < cart.products.length; i++) {
       prices.push(cart.products[i].price);
       taxPrices.push(cart.products[i].taxPrice);
       shippingPrices.push(cart.products[i].shippingPrice);
       totalPrices.push(cart.products[i].totalPrice);
     }
-    let price = formatFloatingNumber(prices.reduce(getSum, 0));
-    let taxPrice = formatFloatingNumber(taxPrices.reduce(getSum, 0));
-    let shippingPrice = formatFloatingNumber(shippingPrices.reduce(getSum, 0));
-    let totalPrice = formatFloatingNumber(totalPrices.reduce(getSum, 0));
+    const price = formatFloatingNumber(prices.reduce(getSum, 0));
+    const taxPrice = formatFloatingNumber(taxPrices.reduce(getSum, 0));
+    const shippingPrice = formatFloatingNumber(
+      shippingPrices.reduce(getSum, 0)
+    );
+    const totalPrice = formatFloatingNumber(totalPrices.reduce(getSum, 0));
 
     return {price, taxPrice, shippingPrice, totalPrice};
   };
@@ -71,26 +72,26 @@ const Checkout = ({cart}: CheckoutProps) => {
     const {city, state, country, zip, address} = values;
 
     try {
-      let prices = [];
-      let taxPrices = [];
-      let shippingPrices = [];
-      let totalPrices = [];
+      const prices = [];
+      const taxPrices = [];
+      const shippingPrices = [];
+      const totalPrices = [];
       for (let i = 0; i < cart.products.length; i++) {
         prices.push(cart.products[i].price);
         taxPrices.push(cart.products[i].taxPrice);
         shippingPrices.push(cart.products[i].shippingPrice);
         totalPrices.push(cart.products[i].totalPrice);
       }
-      let price = formatFloatingNumber(prices.reduce(getSum, 0));
-      let taxPrice = formatFloatingNumber(taxPrices.reduce(getSum, 0));
-      let shippingPrice = formatFloatingNumber(
+      const price = formatFloatingNumber(prices.reduce(getSum, 0));
+      const taxPrice = formatFloatingNumber(taxPrices.reduce(getSum, 0));
+      const shippingPrice = formatFloatingNumber(
         shippingPrices.reduce(getSum, 0)
       );
-      let totalPrice = formatFloatingNumber(totalPrices.reduce(getSum, 0));
+      const totalPrice = formatFloatingNumber(totalPrices.reduce(getSum, 0));
 
       const orderItems: any[] = [];
       for (let i = 0; i < cart?.products?.length; i++) {
-        let newObj = {
+        const newObj = {
           product: cart?.products[i]?.product._id,
           quantity: cart?.products[i]?.quantity,
         };
@@ -105,7 +106,7 @@ const Checkout = ({cart}: CheckoutProps) => {
       });
       const order = await data.json();
       const options = {
-        key: RAZORPAY_KEY,
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY,
         name: "Social App",
         description: "Social app e-commerce store.",
         currency: order.order.currency,
@@ -169,7 +170,7 @@ const Checkout = ({cart}: CheckoutProps) => {
     <section className="p-6 shadow-xl rounded-xl w-full">
       <Form {...form}>
         <form
-          className="flex flex-col justify-start gap-10"
+          className="flex flex-col justify-start gap-5"
           onSubmit={form.handleSubmit(onSubmit)}
         >
           <h1 className="text-3xl font-bold capitalize">Checkout</h1>

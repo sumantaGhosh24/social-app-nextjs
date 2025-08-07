@@ -20,7 +20,6 @@ import useLike from "@/hooks/use-like";
 import useSave from "@/hooks/use-save";
 import {IPost} from "@/models/postModel";
 import {IUser} from "@/models/userModel";
-import {FRONTEND_URL} from "@/lib/config";
 import DialogProvider from "@/components/dialog-provider";
 import {useToast} from "@/hooks/use-toast";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
@@ -168,7 +167,7 @@ const PostCard = ({post, user}: PostCardProps) => {
               description="Share post to grow our community"
             >
               <ShareSocial
-                url={`${FRONTEND_URL}/post/${post._id}`}
+                url={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/post/${post._id}`}
                 socialTypes={[
                   "facebook",
                   "twitter",

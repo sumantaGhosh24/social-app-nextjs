@@ -15,28 +15,11 @@ export interface INotification extends Document {
 
 const NotificationSchema = new Schema(
   {
-    from: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
-    user: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
-    message: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    isRead: {
-      type: Boolean,
-      default: false,
-    },
-    url: {
-      type: String,
-    },
+    from: {type: Schema.Types.ObjectId, ref: "User", required: true},
+    user: {type: Schema.Types.ObjectId, ref: "User", required: true},
+    message: {type: String, required: true, trim: true},
+    isRead: {type: Boolean, default: false},
+    url: {type: String},
   },
   {timestamps: true}
 );
