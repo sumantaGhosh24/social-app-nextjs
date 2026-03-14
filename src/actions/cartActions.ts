@@ -45,12 +45,14 @@ export async function addCart({productId, quantity, path}: AddCartParams) {
 
     let cart = await CartModel.findOne({user: user._id});
     if (cart) {
-      let productIndex = cart.products.findIndex((b: any) => b.product == productId);
+      const productIndex = cart.products.findIndex(
+        (b: any) => b.product == productId
+      );
 
       const product = await ProductModel.findById(productId).select("price");
 
       if (productIndex > -1) {
-        let productItem = cart.products[productIndex];
+        const productItem = cart.products[productIndex];
         productItem.quantity = quantity;
         productItem.price = parseInt(product.price) * quantity;
         productItem.taxPrice = (10 / 100) * productItem.price;
@@ -59,10 +61,10 @@ export async function addCart({productId, quantity, path}: AddCartParams) {
           productItem.price + productItem.taxPrice + productItem.shippingPrice;
         cart.products[productIndex] = productItem;
       } else {
-        let price = parseInt(product.price);
-        let taxPrice = (10 / 100) * price;
-        let shippingPrice = (5 / 100) * price;
-        let totalPrice = price + taxPrice + shippingPrice;
+        const price = parseInt(product.price);
+        const taxPrice = (10 / 100) * price;
+        const shippingPrice = (5 / 100) * price;
+        const totalPrice = price + taxPrice + shippingPrice;
 
         cart.products.push({
           product: productId,
@@ -78,10 +80,10 @@ export async function addCart({productId, quantity, path}: AddCartParams) {
     } else {
       const product = await ProductModel.findById(productId).select("price");
 
-      let price = parseInt(product.price);
-      let taxPrice = (10 / 100) * price;
-      let shippingPrice = (5 / 100) * price;
-      let totalPrice = price + taxPrice + shippingPrice;
+      const price = parseInt(product.price);
+      const taxPrice = (10 / 100) * price;
+      const shippingPrice = (5 / 100) * price;
+      const totalPrice = price + taxPrice + shippingPrice;
 
       await CartModel.create({
         user: user._id,
@@ -113,7 +115,9 @@ export async function removeCart({productId, path}: RemoveCartParams) {
 
     let cart = await CartModel.findOne({user: user._id});
 
-    let productIndex = cart.products.findIndex((b: any) => b.product == productId);
+    const productIndex = cart.products.findIndex(
+      (b: any) => b.product == productId
+    );
 
     if (productIndex > -1) {
       cart.products.splice(productIndex, 1);
