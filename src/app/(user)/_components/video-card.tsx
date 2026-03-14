@@ -108,7 +108,7 @@ const VideoCard = ({video, user}: VideoCardProps) => {
               @{video.user?.username}
             </span>
             <span className="text-neutral-500 text-sm">
-              {formatDistanceToNowStrict(video.createdAt)}
+              {formatDistanceToNowStrict(video.createdAt)} ago
             </span>
           </div>
           <div className="mt-1" onClick={goToVideo}>

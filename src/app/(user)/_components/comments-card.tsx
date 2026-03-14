@@ -67,7 +67,7 @@ const CommentCard = ({comment, user, postOwnerId}: CommentCardProps) => {
               @{comment.postedBy?.username}
             </span>
             <span className="text-neutral-500 text-sm">
-              {formatDistanceToNowStrict(comment.createdAt)}
+              {formatDistanceToNowStrict(comment.createdAt)} ago
             </span>
           </div>
           <div className="mt-1">{comment.message}</div>

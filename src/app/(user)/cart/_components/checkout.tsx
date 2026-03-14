@@ -145,6 +145,8 @@ const Checkout = ({cart}: CheckoutProps) => {
           }
         },
       };
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
       const paymentObject = new window.Razorpay(options);
       paymentObject.open();
       paymentObject.on("payment.failed", function () {
@@ -167,144 +169,113 @@ const Checkout = ({cart}: CheckoutProps) => {
   };
 
   return (
-    <section className="p-6 shadow-xl rounded-xl w-full">
+    <section className="p-6 shadow-md rounded-md w-full dark:shadow-gray-400">
       <Form {...form}>
         <form
-          className="flex flex-col justify-start gap-5"
           onSubmit={form.handleSubmit(onSubmit)}
+          className="grid md:grid-cols-2 gap-10"
         >
-          <h1 className="text-3xl font-bold capitalize">Checkout</h1>
-          <div className="flex items-center gap-5">
-            <p className="text-lg font-bold">
-              Price:{" "}
-              <span className="font-medium">{calculatePrice().price}</span>
-            </p>
-            <p className="text-lg font-bold">
-              Tax Price:{" "}
-              <span className="font-medium">{calculatePrice().taxPrice}</span>
-            </p>
-            <p className="text-lg font-bold">
-              Shipping Price:{" "}
-              <span className="font-medium">
-                {calculatePrice().shippingPrice}
-              </span>
-            </p>
-            <p className="text-lg font-bold">
-              Total Price:{" "}
-              <span className="font-medium">{calculatePrice().totalPrice}</span>
-            </p>
-          </div>
-          <div className="flex flex-col md:flex-row gap-2">
-            <FormField
-              control={form.control}
-              name="city"
-              render={({field}) => (
-                <FormItem className="flex w-full flex-col gap-3">
-                  <FormLabel className="text-base font-semibold">
-                    City
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="text"
-                      className="bg-gray-200 focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 text-black"
-                      placeholder="Enter your city"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="state"
-              render={({field}) => (
-                <FormItem className="flex w-full flex-col gap-3">
-                  <FormLabel className="text-base font-semibold">
-                    State
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="text"
-                      className="bg-gray-200 focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 text-black"
-                      placeholder="Enter your state"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="flex flex-col md:flex-row gap-2">
-            <FormField
-              control={form.control}
-              name="country"
-              render={({field}) => (
-                <FormItem className="flex w-full flex-col gap-3">
-                  <FormLabel className="text-base font-semibold">
-                    Country
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="text"
-                      className="bg-gray-200 focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 text-black"
-                      placeholder="Enter your country"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="zip"
-              render={({field}) => (
-                <FormItem className="flex w-full flex-col gap-3">
-                  <FormLabel className="text-base font-semibold">Zip</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="text"
-                      className="bg-gray-200 focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 text-black"
-                      placeholder="Enter your zip"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="flex flex-col md:flex-row gap-2">
+          <div className="space-y-6">
+            <h1 className="text-3xl font-bold">Checkout</h1>
+            <div className="grid md:grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="city"
+                render={({field}) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold">City</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter your city" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="state"
+                render={({field}) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold">State</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter your state" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="grid md:grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="country"
+                render={({field}) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold">Country</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter your country" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="zip"
+                render={({field}) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold">Zip Code</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter your zip" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
             <FormField
               control={form.control}
               name="address"
               render={({field}) => (
-                <FormItem className="flex w-full flex-col gap-3">
-                  <FormLabel className="text-base font-semibold">
-                    Address
-                  </FormLabel>
+                <FormItem>
+                  <FormLabel className="font-semibold">Address</FormLabel>
                   <FormControl>
-                    <Input
-                      type="text"
-                      className="bg-gray-200 focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 text-black"
-                      placeholder="Enter your address"
-                      {...field}
-                    />
+                    <Input placeholder="Enter your full address" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
-          <Button
-            type="submit"
-            disabled={loading}
-            className={`max-w-fit bg-${primaryColor}-700 hover:bg-${primaryColor}-800 disabled:bg-${primaryColor}-300`}
-          >
-            {loading ? "Processing..." : "Checkout"}
-          </Button>
+          <div className="border rounded-xl p-6 h-fit space-y-4">
+            <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
+            <div className="flex justify-between">
+              <span>Subtotal</span>
+              <span>₹{calculatePrice().price}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Tax</span>
+              <span>₹{calculatePrice().taxPrice}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Shipping</span>
+              <span>₹{calculatePrice().shippingPrice}</span>
+            </div>
+            <div className="border-t pt-3 flex justify-between text-lg font-bold">
+              <span>Total</span>
+              <span className={`text-${primaryColor}-500`}>
+                ₹{calculatePrice().totalPrice}
+              </span>
+            </div>
+            <Button
+              type="submit"
+              disabled={loading}
+              size="lg"
+              className={`w-full mt-4 bg-${primaryColor}-700 hover:bg-${primaryColor}-800 disabled:bg-${primaryColor}-300`}
+            >
+              {loading ? "Processing..." : "Checkout"}
+            </Button>
+          </div>
         </form>
       </Form>
     </section>

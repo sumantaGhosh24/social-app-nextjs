@@ -29,7 +29,7 @@ const UpdateProfileImage = async ({params}: UpdateProfileImageProps) => {
 
   return (
     <>
-      <Tabs defaultValue="profile-image" className="w-full">
+      <Tabs defaultValue="profile-image" className="w-full container mx-auto">
         <TabsList className="mx-10 mt-10 grid grid-cols-2">
           <TabsTrigger value="profile-image">Update Profile Image</TabsTrigger>
           <TabsTrigger value="cover-image">Update Cover Image</TabsTrigger>

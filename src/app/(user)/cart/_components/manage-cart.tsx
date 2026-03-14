@@ -43,45 +43,59 @@ const ManageCart = ({cart}: ManageCartProps) => {
   };
 
   return (
-    <section className="p-6 shadow-xl rounded-xl w-full">
-      <h1 className="text-3xl font-bold capitalize mb-10">My Cart</h1>
-      {cart && cart.products && cart.products.length > 0 ? (
-        <div className="relative overflow-x-auto mt-10">
-          <Table>
-            <TableCaption>A list of products in your cart.</TableCaption>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[100px]">No</TableHead>
-                <TableHead>Product</TableHead>
-                <TableHead>Decrement</TableHead>
-                <TableHead>Quantity</TableHead>
-                <TableHead>Increment</TableHead>
-                <TableHead>Remove</TableHead>
-                <TableHead>Price</TableHead>
-                <TableHead>Tax Price</TableHead>
-                <TableHead>Shipping Price</TableHead>
-                <TableHead>Total Price</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {cart?.products?.map((product, ind) => (
-                <Cart product={product} ind={ind + 1} key={ind} />
-              ))}
-            </TableBody>
-          </Table>
+    <section className="p-6 shadow-md rounded-md w-full dark:shadow-gray-400">
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="text-3xl font-bold">My Cart</h1>
+        {cart?.products?.length > 0 && (
           <Button
             type="button"
             disabled={loading}
-            className="bg-red-700 hover:bg-red-800 disabled:bg-red-300"
             onClick={handleClearCart}
+            className="flex items-center gap-2 bg-red-600 hover:bg-red-700"
           >
-            <Trash /> Clear Cart
+            <Trash size={18} />
+            Clear Cart
           </Button>
+        )}
+      </div>
+      {cart?.products?.length > 0 ? (
+        <div className="space-y-8">
+          <div className="border rounded-lg overflow-x-auto">
+            <Table>
+              <TableCaption>Products currently in your cart.</TableCaption>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[70px]">#</TableHead>
+                  <TableHead>Product</TableHead>
+                  <TableHead className="text-center">-</TableHead>
+                  <TableHead className="text-center">Qty</TableHead>
+                  <TableHead className="text-center">+</TableHead>
+                  <TableHead className="text-center">Remove</TableHead>
+                  <TableHead>Price</TableHead>
+                  <TableHead>Tax</TableHead>
+                  <TableHead>Shipping</TableHead>
+                  <TableHead>Total</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {cart.products.map((product, ind) => (
+                  <Cart product={product} ind={ind + 1} key={ind} />
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </div>
       ) : (
-        <h3 className="text-xl capitalize mb-10">
-          Your cart is empty, add a product to see your cart.
-        </h3>
+        /* EMPTY CART */
+        <div className="flex flex-col items-center justify-center py-20 text-center space-y-4">
+          <p className="text-xl font-semibold">Your cart is empty</p>
+
+          <p className="text-gray-500">
+            Looks like you haven&apos;t added any products yet.
+          </p>
+
+          <Button size="lg">Browse Products</Button>
+        </div>
       )}
     </section>
   );

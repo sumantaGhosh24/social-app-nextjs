@@ -19,7 +19,7 @@ const Notifications = async ({searchParams}: NotificationsProps) => {
   });
 
   return (
-    <div className="mx-auto my-20 w-[95%] rounded p-8 shadow shadow-black dark:shadow-white">
+    <div className="mx-auto my-10 container rounded p-8 shadow dark:shadow-gray-400">
       <h1 className="mb-5 text-3xl font-bold">My Notifications</h1>
       <NotificationFeed
         data={notifications?.data}

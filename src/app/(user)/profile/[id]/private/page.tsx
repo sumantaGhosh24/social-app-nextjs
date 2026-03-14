@@ -36,7 +36,7 @@ const PrivatePost = async ({params, searchParams}: PrivatePostProps) => {
 
   return (
     <>
-      <Tabs defaultValue="image" className="w-full ml-5">
+      <Tabs defaultValue="image" className="w-full ml-5 container mx-auto">
         <TabsList>
           <TabsTrigger value="image">Image</TabsTrigger>
           <TabsTrigger value="audio">Audio</TabsTrigger>

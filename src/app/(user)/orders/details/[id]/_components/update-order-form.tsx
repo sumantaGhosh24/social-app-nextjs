@@ -78,84 +78,82 @@ const UpdateOrderForm = ({order}: UpdateOrderFormProps) => {
   };
 
   return (
-    <div className="my-10 flex w-full items-center justify-center">
-      <div className="w-[95%] space-y-4 rounded-lg p-5 shadow-lg shadow-black dark:shadow-white">
-        <Form {...form}>
-          <form
-            className="flex flex-col justify-start gap-5"
-            onSubmit={form.handleSubmit(onSubmit)}
-          >
-            <h1 className="mb-5 text-2xl font-bold">Update Order</h1>
-            <FormField
-              control={form.control}
-              name="orderStatus"
-              render={({field}) => (
-                <FormItem className="flex w-full flex-col">
-                  <FormLabel className="text-base font-semibold">
-                    Order Status
-                  </FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
+    <div className="container my-10 mx-auto space-y-4 rounded-md p-5 shadow-md dark:shadow-gray-400">
+      <Form {...form}>
+        <form
+          className="flex flex-col justify-start gap-5"
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
+          <h1 className="mb-5 text-2xl font-bold">Update Order</h1>
+          <FormField
+            control={form.control}
+            name="orderStatus"
+            render={({field}) => (
+              <FormItem className="flex w-full flex-col">
+                <FormLabel className="text-base font-semibold">
+                  Order Status
+                </FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select order status" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value={"pending"}>Pending</SelectItem>
+                    <SelectItem value={"completed"}>Completed</SelectItem>
+                    <SelectItem value={"cancelled"}>Cancelled</SelectItem>
+                    <SelectItem value={"refund"}>Refund</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="deliverAt"
+            render={({field}) => (
+              <FormItem className="flex flex-col w-full">
+                <FormLabel>Deliver At</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
                     <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select order status" />
-                      </SelectTrigger>
+                      <Button className="border border-gray-500 bg-white text-black dark:bg-black dark:text-white">
+                        {field.value ? (
+                          format(field.value, "PPP")
+                        ) : (
+                          <span>Pick a date</span>
+                        )}
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
                     </FormControl>
-                    <SelectContent>
-                      <SelectItem value={"pending"}>Pending</SelectItem>
-                      <SelectItem value={"completed"}>Completed</SelectItem>
-                      <SelectItem value={"cancelled"}>Cancelled</SelectItem>
-                      <SelectItem value={"refund"}>Refund</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="deliverAt"
-              render={({field}) => (
-                <FormItem className="flex flex-col w-full">
-                  <FormLabel>Deliver At</FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button className="border border-gray-500 bg-white text-black dark:bg-black dark:text-white">
-                          {field.value ? (
-                            format(field.value, "PPP")
-                          ) : (
-                            <span>Pick a date</span>
-                          )}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={field.value}
-                        onSelect={field.onChange}
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button
-              type="submit"
-              disabled={loading}
-              className={`max-w-fit bg-${primaryColor}-700 hover:bg-${primaryColor}-800 disabled:bg-${primaryColor}-300`}
-            >
-              {loading ? "Processing..." : "Update Category"}
-            </Button>
-          </form>
-        </Form>
-      </div>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={field.value}
+                      onSelect={field.onChange}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button
+            type="submit"
+            disabled={loading}
+            className={`max-w-fit bg-${primaryColor}-700 hover:bg-${primaryColor}-800 disabled:bg-${primaryColor}-300`}
+          >
+            {loading ? "Processing..." : "Update Order"}
+          </Button>
+        </form>
+      </Form>
     </div>
   );
 };

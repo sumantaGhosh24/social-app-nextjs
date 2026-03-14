@@ -22,7 +22,7 @@ export default async function Videos({searchParams}: VideosProps) {
   const users = await getUserSuggestions();
 
   return (
-    <div className="flex flex-col-reverse md:flex-row">
+    <div className="flex flex-col-reverse md:flex-row container mx-auto">
       <div className="w-full mb-5 md:mb-0 md:w-3/4">
         <CreateVideo user={JSON.parse(JSON.stringify(user))} />
         <VideoFeed

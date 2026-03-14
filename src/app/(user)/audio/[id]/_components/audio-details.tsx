@@ -90,7 +90,7 @@ const AudioDetails = ({audio, user, likes, comments}: AudioDetailsProps) => {
   const SaveIcon = isSave ? <SaveOff /> : <Save />;
 
   return (
-    <div className="bg-gray-100 p-5 hover:bg-gray-200 dark:bg-gray-700 my-5 mx-3 rounded">
+    <div className="bg-gray-100 p-5 hover:bg-gray-200 dark:bg-gray-700 my-5 rounded container mx-auto">
       <h2 className="text-xl font-bold capitalize">{audio.title}</h2>
       <Image
         src={audio.thumbnail.url}

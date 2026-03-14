@@ -72,84 +72,82 @@ const ResetPasswordForm = ({userId}: ResetPasswordFormProps) => {
   };
 
   return (
-    <div className="my-10 flex w-full items-center justify-center">
-      <div className="w-[95%] space-y-4 rounded-lg p-5 shadow-lg shadow-black dark:shadow-white">
-        <Form {...form}>
-          <form
-            className="flex flex-col justify-start gap-5"
-            onSubmit={form.handleSubmit(onSubmit)}
+    <div className="container mx-auto my-10 space-y-4 rounded-md p-5 shadow-md dark:shadow-gray-400">
+      <Form {...form}>
+        <form
+          className="flex flex-col justify-start gap-5"
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
+          <h1 className="mb-5 text-3xl font-bold">Reset Password</h1>
+          <FormField
+            control={form.control}
+            name="oldPassword"
+            render={({field}) => (
+              <FormItem className="flex w-full flex-col gap-3">
+                <FormLabel className="text-base font-semibold">
+                  Old Password
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    type="password"
+                    className="bg-gray-200 focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 text-black"
+                    placeholder="Enter your old password"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({field}) => (
+              <FormItem className="flex w-full flex-col gap-3">
+                <FormLabel className="text-base font-semibold">
+                  New Password
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    type="password"
+                    className="bg-gray-200 focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 text-black"
+                    placeholder="Enter your new password"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="cf_password"
+            render={({field}) => (
+              <FormItem className="flex w-full flex-col gap-3">
+                <FormLabel className="text-base font-semibold">
+                  New Confirm Password
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    type="password"
+                    className="bg-gray-200 focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 text-black"
+                    placeholder="Enter your new confirm password"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button
+            type="submit"
+            disabled={loading}
+            className={`max-w-fit bg-${primaryColor}-700 hover:bg-${primaryColor}-800 disabled:bg-${primaryColor}-300`}
           >
-            <h1 className="mb-5 text-3xl font-bold">Reset Password</h1>
-            <FormField
-              control={form.control}
-              name="oldPassword"
-              render={({field}) => (
-                <FormItem className="flex w-full flex-col gap-3">
-                  <FormLabel className="text-base font-semibold">
-                    Old Password
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      className="bg-gray-200 focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 text-black"
-                      placeholder="Enter your old password"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({field}) => (
-                <FormItem className="flex w-full flex-col gap-3">
-                  <FormLabel className="text-base font-semibold">
-                    New Password
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      className="bg-gray-200 focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 text-black"
-                      placeholder="Enter your new password"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="cf_password"
-              render={({field}) => (
-                <FormItem className="flex w-full flex-col gap-3">
-                  <FormLabel className="text-base font-semibold">
-                    New Confirm Password
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      className="bg-gray-200 focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 text-black"
-                      placeholder="Enter your new confirm password"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button
-              type="submit"
-              disabled={loading}
-              className={`max-w-fit bg-${primaryColor}-700 hover:bg-${primaryColor}-800 disabled:bg-${primaryColor}-300`}
-            >
-              {loading ? "Processing..." : "Reset Password"}
-            </Button>
-          </form>
-        </Form>
-      </div>
+            {loading ? "Processing..." : "Reset Password"}
+          </Button>
+        </form>
+      </Form>
     </div>
   );
 };

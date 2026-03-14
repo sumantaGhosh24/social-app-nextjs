@@ -28,7 +28,7 @@ const SearchUser = async ({searchParams}: SearchUserProps) => {
   if (!currentUserDetails) return null;
 
   return (
-    <div className="mx-auto my-20 w-[95%] rounded p-8 shadow shadow-black dark:shadow-white">
+    <div className="mx-auto my-10 container rounded p-8 shadow dark:shadow-gray-400">
       <h2 className="mb-4 text-3xl font-bold">Search Users</h2>
       <div className="mb-4">
         <SearchBar placeholder="Search users" />

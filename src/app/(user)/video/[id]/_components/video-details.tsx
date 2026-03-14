@@ -89,7 +89,7 @@ const VideoDetails = ({video, user, likes, comments}: VideoDetailsProps) => {
   const SaveIcon = isSave ? <SaveOff /> : <Save />;
 
   return (
-    <div className="bg-gray-100 p-5 hover:bg-gray-200 dark:bg-gray-700 my-5 mx-3 rounded">
+    <div className="bg-gray-100 p-5 hover:bg-gray-200 dark:bg-gray-700 my-5 rounded container mx-auto">
       <h2 className="text-xl font-bold capitalize">{video.title}</h2>
       <video controls poster={video.thumbnail.url} className="w-full rounded">
         <source src={video.video.url} type="video/mp4" />

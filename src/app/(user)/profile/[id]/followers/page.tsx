@@ -28,7 +28,7 @@ const Followers = async ({params}: FollowersProps) => {
   const followers = await getFollowers(id);
 
   return (
-    <div className="mx-auto my-20 w-[95%] rounded p-8 shadow shadow-black dark:shadow-white">
+    <div className="mx-auto my-10 container rounded p-8 shadow dark:shadow-gray-400">
       <h2 className="mb-4 text-3xl font-bold">Followers</h2>
       <Users
         data={followers.followers}

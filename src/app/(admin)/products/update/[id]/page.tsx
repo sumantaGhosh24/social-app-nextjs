@@ -27,7 +27,7 @@ const UpdateProduct = async ({params}: UpdateProductProps) => {
 
   return (
     <>
-      <Tabs defaultValue="update-product" className="w-full">
+      <Tabs defaultValue="update-product" className="w-full container mx-auto">
         <TabsList className="mx-10 mt-10 grid grid-cols-3">
           <TabsTrigger value="update-product">Update Product</TabsTrigger>
           <TabsTrigger value="add-image">Add Product Image</TabsTrigger>

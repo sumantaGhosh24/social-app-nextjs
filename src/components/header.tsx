@@ -29,7 +29,7 @@ const Header = ({user}: {user: any}) => {
 
   return (
     <nav
-      className={`w-full border-b bg-${primaryColor}-700 shadow shadow-black text-white dark:shadow-white`}
+      className={`w-full border-b bg-${primaryColor}-700 shadow text-white dark:shadow-gray-400`}
     >
       <div className="mx-auto max-w-screen-xl items-center px-4 md:flex md:px-8">
         <div className="flex items-center justify-between py-3 md:block md:py-5">

@@ -24,14 +24,14 @@ export default async function UserReviewsPage({
 
   const reviews = await getUserReviews({
     pageNumber: Number(page) || 1,
-    pageSize: 10,
+    pageSize: 50,
     user: id,
   });
 
   const user = await getServerUser();
 
   return (
-    <div className="mx-auto my-20 w-[95%] rounded p-8 shadow shadow-black dark:shadow-white">
+    <div className="mx-auto my-10 container rounded p-8 shadow dark:shadow-gray-400">
       <div className="mb-8 text-left">
         <h2 className="mb-4 text-3xl font-bold">Manage User Reviews</h2>
         <p className="text-gray-600">Admin manage user reviews.</p>

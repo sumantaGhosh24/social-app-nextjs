@@ -98,7 +98,7 @@ const PostDetails = ({post, user, likes, comments}: PostDetailsProps) => {
   const SaveIcon = isSave ? <SaveOff /> : <Save />;
 
   return (
-    <div className="bg-gray-100 p-5 hover:bg-gray-200 dark:bg-gray-700 my-5 mx-3 rounded">
+    <div className="bg-gray-100 p-5 hover:bg-gray-200 dark:bg-gray-700 my-5 rounded container mx-auto">
       {post.title && (
         <h2 className="text-xl font-bold capitalize">{post.title}</h2>
       )}

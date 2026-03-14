@@ -22,8 +22,8 @@ export default async function UpdateCategoryPage({
   if (!category) redirect("/categories");
 
   return (
-    <div className="my-20 flex h-[80vh] w-full items-center justify-center">
-      <div className="min-w-[60%] space-y-4 rounded-lg p-5 shadow-lg shadow-black dark:shadow-white">
+    <div className="my-10 flex h-[80vh] container mx-auto w-full items-center justify-center">
+      <div className="min-w-[80%] space-y-4 rounded-md p-5 shadow-md dark:shadow-gray-400">
         <UpdateCategoryForm category={JSON.parse(JSON.stringify(category))} />
       </div>
     </div>

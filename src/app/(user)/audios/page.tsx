@@ -22,7 +22,7 @@ export default async function Audios({searchParams}: AudiosProps) {
   const users = await getUserSuggestions();
 
   return (
-    <div className="flex flex-col-reverse md:flex-row">
+    <div className="flex flex-col-reverse md:flex-row container mx-auto">
       <div className="w-full mb-5 md:mb-0 md:w-3/4">
         <CreateAudio user={JSON.parse(JSON.stringify(user))} />
         <AudioFeed

@@ -116,7 +116,7 @@ const PostCard = ({post, user}: PostCardProps) => {
               @{post.user?.username}
             </span>
             <span className="text-neutral-500 text-sm">
-              {formatDistanceToNowStrict(post.createdAt)}
+              {formatDistanceToNowStrict(post.createdAt)} ago
             </span>
           </div>
           <div className="mt-1" onClick={goToPost}>

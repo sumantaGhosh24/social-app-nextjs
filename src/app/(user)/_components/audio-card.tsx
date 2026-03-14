@@ -109,7 +109,7 @@ const AudioCard = ({audio, user}: AudioCardProps) => {
               @{audio.user?.username}
             </span>
             <span className="text-neutral-500 text-sm">
-              {formatDistanceToNowStrict(audio.createdAt)}
+              {formatDistanceToNowStrict(audio.createdAt)} ago
             </span>
           </div>
           <div className="mt-1" onClick={goToAudio}>
