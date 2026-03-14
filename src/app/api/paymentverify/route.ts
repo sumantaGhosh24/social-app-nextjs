@@ -33,7 +33,7 @@ export async function POST(req: Request) {
 
     const user = await getServerUser();
 
-    var date_time = new Date();
+    const date_time = new Date();
 
     await OrderModel.create({
       user: user?._id,
