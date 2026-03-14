@@ -14,7 +14,7 @@ export const metadata = {
 };
 
 interface SavedPostProps {
-  params: {id: string};
+  params: Promise<{id: string}>;
 }
 
 const SavedPost = async ({params}: SavedPostProps) => {

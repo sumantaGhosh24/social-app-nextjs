@@ -11,7 +11,7 @@ export const metadata = {
 };
 
 interface VideosProps {
-  searchParams: {[key: string]: string | string[] | undefined};
+  searchParams: Promise<{[key: string]: string | string[] | undefined}>;
 }
 
 export default async function Videos({searchParams}: VideosProps) {

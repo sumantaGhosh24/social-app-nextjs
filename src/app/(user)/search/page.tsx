@@ -9,7 +9,7 @@ export const metadata = {
 };
 
 interface SearchUserProps {
-  searchParams: {[key: string]: string | string[] | undefined};
+  searchParams: Promise<{[key: string]: string | string[] | undefined}>;
 }
 
 const SearchUser = async ({searchParams}: SearchUserProps) => {

@@ -9,7 +9,7 @@ export const metadata = {
 };
 
 interface MyReviewsPageProps {
-  searchParams: {[key: string]: string | string[] | undefined};
+  searchParams: Promise<{[key: string]: string | string[] | undefined}>;
 }
 
 export default async function MyReviewsPage({

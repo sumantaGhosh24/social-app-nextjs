@@ -11,7 +11,7 @@ export const metadata = {
 };
 
 interface AudiosProps {
-  searchParams: {[key: string]: string | string[] | undefined};
+  searchParams: Promise<{[key: string]: string | string[] | undefined}>;
 }
 
 export default async function Audios({searchParams}: AudiosProps) {

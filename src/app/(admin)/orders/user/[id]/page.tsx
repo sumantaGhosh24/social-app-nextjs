@@ -9,8 +9,8 @@ export const metadata = {
 };
 
 interface UserOrdersPageProps {
-  searchParams: {[key: string]: string | string[] | undefined};
-  params: {id: string};
+  searchParams: Promise<{[key: string]: string | string[] | undefined}>;
+  params: Promise<{id: string}>;
 }
 
 export default async function UserOrdersPage({

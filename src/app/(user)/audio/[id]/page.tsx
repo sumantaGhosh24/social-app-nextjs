@@ -11,7 +11,7 @@ export const metadata = {
 };
 
 interface AudioProps {
-  params: {id: string};
+  params: Promise<{id: string}>;
 }
 
 const Audio = async ({params}: AudioProps) => {

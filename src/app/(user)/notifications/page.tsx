@@ -7,7 +7,7 @@ export const metadata = {
 };
 
 interface NotificationsProps {
-  searchParams: {[key: string]: string | string[] | undefined};
+  searchParams: Promise<{[key: string]: string | string[] | undefined}>;
 }
 
 const Notifications = async ({searchParams}: NotificationsProps) => {

@@ -13,7 +13,7 @@ export const metadata = {
 };
 
 interface UpdateProductProps {
-  params: {id: string};
+  params: Promise<{id: string}>;
 }
 
 const UpdateProduct = async ({params}: UpdateProductProps) => {

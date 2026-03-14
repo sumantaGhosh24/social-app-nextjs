@@ -12,7 +12,7 @@ export const metadata = {
 };
 
 interface UpdateProfileImageProps {
-  params: {id: string};
+  params: Promise<{id: string}>;
 }
 
 const UpdateProfileImage = async ({params}: UpdateProfileImageProps) => {

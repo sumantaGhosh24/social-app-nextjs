@@ -10,7 +10,7 @@ export const metadata = {
 };
 
 interface FollowingsProps {
-  params: {id: string};
+  params: Promise<{id: string}>;
 }
 
 const Followings = async ({params}: FollowingsProps) => {

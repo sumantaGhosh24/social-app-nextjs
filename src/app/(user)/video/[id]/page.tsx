@@ -11,7 +11,7 @@ export const metadata = {
 };
 
 interface VideoProps {
-  params: {id: string};
+  params: Promise<{id: string}>;
 }
 
 const Video = async ({params}: VideoProps) => {

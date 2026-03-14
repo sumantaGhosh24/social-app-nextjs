@@ -10,7 +10,7 @@ export const metadata = {
 };
 
 interface UpdateProfileProps {
-  params: {id: string};
+  params: Promise<{id: string}>;
 }
 
 const UpdateProfile = async ({params}: UpdateProfileProps) => {

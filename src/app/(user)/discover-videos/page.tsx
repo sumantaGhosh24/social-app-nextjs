@@ -10,7 +10,7 @@ export const metadata = {
 };
 
 interface DiscoverVideosProps {
-  searchParams: {[key: string]: string | string[] | undefined};
+  searchParams: Promise<{[key: string]: string | string[] | undefined}>;
 }
 
 export default async function DiscoverVideos({

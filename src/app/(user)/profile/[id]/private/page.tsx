@@ -14,8 +14,8 @@ export const metadata = {
 };
 
 interface PrivatePostProps {
-  params: {id: string};
-  searchParams: {[key: string]: string | string[] | undefined};
+  params: Promise<{id: string}>;
+  searchParams: Promise<{[key: string]: string | string[] | undefined}>;
 }
 
 const PrivatePost = async ({params, searchParams}: PrivatePostProps) => {

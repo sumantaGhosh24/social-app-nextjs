@@ -10,7 +10,7 @@ export const metadata = {
 };
 
 interface ProfileProps {
-  params: {id: string};
+  params: Promise<{id: string}>;
 }
 
 const Profile = async ({params}: ProfileProps) => {

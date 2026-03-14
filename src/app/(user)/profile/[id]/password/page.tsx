@@ -9,7 +9,7 @@ export const metadata = {
 };
 
 interface ResetPasswordProps {
-  params: {id: string};
+  params: Promise<{id: string}>;
 }
 
 const ResetPassword = async ({params}: ResetPasswordProps) => {

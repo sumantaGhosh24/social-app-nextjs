@@ -11,7 +11,7 @@ export const metadata = {
 };
 
 interface OrderDetailsPageProps {
-  params: {id: string};
+  params: Promise<{id: string}>;
 }
 
 export default async function OrderPage({params}: OrderDetailsPageProps) {
