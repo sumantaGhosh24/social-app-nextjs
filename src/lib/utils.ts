@@ -92,9 +92,9 @@ const baseURL = process.env.NEXTAUTH_URL;
 
 export async function dynamicBlurDataUrl(url: string) {
   const base64str = await fetch(
-    `${baseURL}/_next/image?url=${url}&w=16&q=75`
+    `${baseURL}/_next/image?url=${url}&w=16&q=75`,
   ).then(async (res) =>
-    Buffer.from(await res.arrayBuffer()).toString("base64")
+    Buffer.from(await res.arrayBuffer()).toString("base64"),
   );
 
   const blurSvg = `
@@ -145,7 +145,7 @@ export function formUrlQuery({params, key, value}: UrlQueryParams) {
       url: window.location.pathname,
       query: currentUrl,
     },
-    {skipNull: true}
+    {skipNull: true},
   );
 }
 
@@ -162,16 +162,6 @@ export function removeKeysFromQuery({
       url: window.location.pathname,
       query: currentUrl,
     },
-    {skipNull: true}
+    {skipNull: true},
   );
-}
-
-export function formatFloatingNumber(number: number) {
-  const roundedNumber = Math.round(number * 100) / 100;
-  const formattedNumber = roundedNumber.toFixed(2);
-  return formattedNumber;
-}
-
-export function getSum(total: number, num: number) {
-  return total + Math.ceil(num);
 }

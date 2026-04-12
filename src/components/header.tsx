@@ -31,7 +31,7 @@ const Header = ({user}: {user: any}) => {
     <nav
       className={`w-full border-b bg-${primaryColor}-700 shadow text-white dark:shadow-gray-400`}
     >
-      <div className="mx-auto max-w-screen-xl items-center px-4 md:flex md:px-8">
+      <div className="mx-auto container items-center px-4 md:flex md:px-8">
         <div className="flex items-center justify-between py-3 md:block md:py-5">
           <Link href="/">
             <Image
@@ -56,7 +56,7 @@ const Header = ({user}: {user: any}) => {
             open ? "block" : "hidden"
           }`}
         >
-          <NavigationMenu className="mx-auto">
+          <NavigationMenu className={open ? "mx-auto" : "ml-auto"}>
             <NavigationMenuList className="flex-col gap-2 md:flex-row">
               {user ? (
                 <>
@@ -127,8 +127,6 @@ const Header = ({user}: {user: any}) => {
                               name: "Profile",
                               url: `/profile/${user._id}`,
                             },
-                            {id: 2, name: "My Reviews", url: "/reviews/my"},
-                            {id: 3, name: "My Orders", url: "/orders/my"},
                             {
                               id: 4,
                               name: user?.hasNotification
@@ -152,20 +150,6 @@ const Header = ({user}: {user: any}) => {
                       </NavigationMenuItem>
                     </NavigationMenuList>
                   </NavigationMenu>
-                  {[
-                    {id: 1, name: "Cart", url: "/cart"},
-                    {id: 2, name: "Shop", url: "/shop"},
-                  ].map((item) => (
-                    <NavigationMenuItem key={item.id}>
-                      <Link href={item.url} legacyBehavior passHref>
-                        <NavigationMenuLink
-                          className={navigationMenuTriggerStyle()}
-                        >
-                          {item.name}
-                        </NavigationMenuLink>
-                      </Link>
-                    </NavigationMenuItem>
-                  ))}
                   {user.role === "admin" && (
                     <>
                       <NavigationMenu>
@@ -175,26 +159,26 @@ const Header = ({user}: {user: any}) => {
                               Manage
                             </NavigationMenuTrigger>
                             <NavigationMenuContent>
-                              {[
-                                {id: 1, name: "Users", url: "/users"},
-                                {id: 2, name: "Categories", url: "/categories"},
-                                {id: 3, name: "Products", url: "/products"},
-                                {id: 4, name: "Reviews", url: "/reviews"},
-                                {id: 5, name: "Orders", url: "/orders"},
-                              ].map((item) => (
-                                <NavigationMenuItem
-                                  key={item.id}
-                                  className="my-3"
-                                >
-                                  <Link href={item.url} legacyBehavior passHref>
-                                    <NavigationMenuLink
-                                      className={navigationMenuTriggerStyle()}
+                              {[{id: 1, name: "Users", url: "/users"}].map(
+                                (item) => (
+                                  <NavigationMenuItem
+                                    key={item.id}
+                                    className="my-3"
+                                  >
+                                    <Link
+                                      href={item.url}
+                                      legacyBehavior
+                                      passHref
                                     >
-                                      {item.name}
-                                    </NavigationMenuLink>
-                                  </Link>
-                                </NavigationMenuItem>
-                              ))}
+                                      <NavigationMenuLink
+                                        className={navigationMenuTriggerStyle()}
+                                      >
+                                        {item.name}
+                                      </NavigationMenuLink>
+                                    </Link>
+                                  </NavigationMenuItem>
+                                ),
+                              )}
                             </NavigationMenuContent>
                           </NavigationMenuItem>
                         </NavigationMenuList>
@@ -206,7 +190,7 @@ const Header = ({user}: {user: any}) => {
                     onClick={() => signOut()}
                     className={cn(
                       navigationMenuTriggerStyle(),
-                      "dark:text-black"
+                      "dark:text-black",
                     )}
                   >
                     Logout
